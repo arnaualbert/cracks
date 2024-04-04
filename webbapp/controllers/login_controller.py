@@ -22,7 +22,7 @@ def get_connection():
     return conn
 
 
-def log_user(username,password):
+def log_user(username: str,password: str) -> bool:
     """
     Verifica las credenciales de inicio de sesión de un usuario.
 
@@ -44,7 +44,7 @@ def log_user(username,password):
         conn.close()
         return False
 
-def username_exist(username):
+def username_exist(username: str) -> bool:
     """
     Verifica si un nombre de usuario ya existe en la base de datos.
 
@@ -66,7 +66,7 @@ def username_exist(username):
         return False
 
 
-def register_user(username,name,surname,email,password):
+def register_user(username: str,name: str,surname: str,email: str,password: str) -> bool:
     """
     Registra un nuevo usuario en la base de datos.
 
