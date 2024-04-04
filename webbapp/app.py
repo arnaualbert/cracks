@@ -19,7 +19,8 @@ def home_user():
         return render_template("home_user.html")
     else:
         return "please log in"
-    
+
+
 @app.route("/logout")
 def logout():
     if request.method == "GET":
