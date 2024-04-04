@@ -1,5 +1,9 @@
-
-// Función para verificar si dos contraseñas son iguales
+/**
+ * Check that both passwords are equal
+ * @param {string} passwordOne 
+ * @param {string} passwordTwo 
+ * @returns {boolean}
+ */
 function checkBothPasswords(passwordOne,passwordTwo){
     if (passwordOne === passwordTwo){
         return true
@@ -8,7 +12,16 @@ function checkBothPasswords(passwordOne,passwordTwo){
     }
 }
 
-// Función para verificar si todas las variables no están vacías
+/**
+ * Check that the variables are not empty
+ * @param {string} passwordOne 
+ * @param {string} passwordTwo 
+ * @param {string} username 
+ * @param {string} email 
+ * @param {string} name 
+ * @param {string} surname 
+ * @returns {boolean}
+ */
 function notEmptyVars(passwordOne,passwordTwo,username,email,name,surname){
 
     var passwordOneCheck = passwordOne.trim()
@@ -30,7 +43,9 @@ function notEmptyVars(passwordOne,passwordTwo,username,email,name,surname){
     }
 }
 
-// Función para habilitar o deshabilitar el botón de registro según la validez de los datos del formulario
+/**
+ * This function disable the button if there is something incorrect and enables it if everything is ok
+ */
 function ableDisableButton(){
 
     // get variables from form
