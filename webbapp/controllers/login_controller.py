@@ -1,6 +1,8 @@
 from flask import Blueprint, request, render_template, redirect, make_response
 import mariadb
 import os
+import hashlib
+
 
 login_module = Blueprint('login_module', __name__, template_folder='templates')
 
@@ -82,7 +84,6 @@ def register_user(username: str,name: str,surname: str,email: str,password: str)
     """
     conn = get_connection()
     exist_account = username_exist(username)
-    print(exist_account)
     if exist_account:
         return False
     elif not exist_account:
@@ -115,7 +116,8 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        user_exist = log_user(username,password)
+        password_db = hashlib.sha256(password.encode('utf-8')).hexdigest() 
+        user_exist = log_user(username,password_db)
         if user_exist:
             resp = make_response(redirect("/home_user"))
             resp.set_cookie("username",username)
@@ -152,7 +154,8 @@ def register():
         password = request.form["password"]
         password_confirm = request.form["passwordrepeat"]
         if password == password_confirm:
-            registered = register_user(username,name,surname,email,password)
+            password_db = hashlib.sha256(password.encode("utf-8")).hexdigest()
+            registered = register_user(username,name,surname,email,password_db)
             if registered:
                 return render_template("register.html",message="Registered successfully.")
             else:
