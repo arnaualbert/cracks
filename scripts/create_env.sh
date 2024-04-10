@@ -10,3 +10,4 @@ source venv/bin/activate
 pip install Flask
 pip install python-dotenv
 pip install mariadb
+pip install gunicorn
