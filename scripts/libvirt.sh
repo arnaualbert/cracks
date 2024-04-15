@@ -87,6 +87,30 @@ if ( ! dpkg -l | grep -q "virtinst" ) ; then
 fi
 
 
+if ( ! dpkg -l | grep -q "libguestfs-tools" ) ; then
+  echo "El paquete libguestfs no está instalada."
+  echo "Libguestfs: Una biblioteca para el acceso y modificación de imágenes de sistemas de archivos de máquinas virtuales."
+  echo "Instalando."
+  echo "Instalando.."
+  echo "Instalando..."
+  apt-get install -y libguestfs-tools >/dev/null
+  echo "Paquete libguestfs instalada correctamente."
+  echo -e "\n"
+fi
+
+
+if ( ! dpkg -l | grep -q "libosinfo-bin" ) ; then
+  echo "El paquete libosinfo no está instalada."
+  echo "libosinfo: Biblioteca para obtener información detallada sobre sistemas operativos y dispositivos en entornos de virtualización y gestión de sistemas."
+  echo "Instalando."
+  echo "Instalando.."
+  echo "Instalando..."
+  apt-get install -y libosinfo-bin >/dev/null
+  echo "Paquete libosinfo instalada correctamente."
+  echo -e "\n"
+fi
+
+
 echo "la muestra del servecio de virtualizacion LIBVIRT despues de haver instalado las paquetes necesarias"
 echo "Iniciando el servecio libvirtd [start] & Asegura la presistencia del servecio libvirt [enable]"
 systemctl start libvirtd
