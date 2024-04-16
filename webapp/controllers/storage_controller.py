@@ -11,3 +11,10 @@ def user_storage():
         return render_template("user_storage.html")
     else:
         return "please log in"
+
+@storage_module.route("/storage_create")
+def user_storage_create():
+    if request.method == "GET" and check_is_logged():
+        return render_template("user_storage_create.html")
+    else:
+        return "please log in"

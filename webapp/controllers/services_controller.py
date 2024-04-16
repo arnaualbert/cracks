@@ -12,3 +12,10 @@ def user_services():
         return render_template("user_services.html")
     else:
         return "please log in"
+
+@services_module.route("/service_create")
+def user_service_create():
+    if request.method == "GET" and check_is_logged():
+        return render_template("user_service_create.html")
+    else:
+        return "please log in"
