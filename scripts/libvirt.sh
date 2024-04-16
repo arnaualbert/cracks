@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#avisamos al usuario que se ejecuta el script con un suario con prevelgios (tiene que hacer instlaciones necesita preveljios)
+#avisamos al usuario que se ha de  ejecuta el script con un suario con prevelgios.
 if [ $(id -u) -eq "0" ]; then
-echo "el script ha ejecutado con el usario $(id -un) que tiene la UID igual a $(id -u). "
-echo "!!!!!User With priviledge¡¡¡¡¡"
+echo "El script ha ejecutado con el usario $(id -un) que tiene la UID igual a $(id -u). "
+echo "!!!!!Usuario con privilegios¡¡¡¡¡"
 else
-echo "el script ha ejecutado con el usario $(id -un) que tiene la UID igual a $(id -u). "
-echo "!!!!!the script need User with previleges¡¡¡¡¡"
+echo "El script se ha ejecutado con el usario $(id -un) que tiene la UID igual a $(id -u). "
+echo "!!!!!El script necesita un usuario con privilegios¡¡¡¡¡"
 exit 1
 fi
 echo -e "\n"

@@ -1,0 +1,44 @@
+->crear maquiena usando una imagen:
+virt-install --connect=qemu:///system --name=cirros1 --ram=6512 --vcpus=3 --disk path=/var/lib/libvirt/images/cirros-0.6.2-x86_64-disk1.img,format=qcow2 --import --network network:hostbridgelibvirt --vnc --os-variant unknown
+|||||||||||||||||||||comando fucniona correctamient|||||||||||||||||||
+
+->crear maquiena usando un iso
+virt-install --name windows1 --memory 2048 --vcpus 2 --disk size=25 --cdrom //var/lib/libvirt/images/Win10_22H2_English_x64v1.iso --import --network network:hostbridgelibvirt --vnc --os-variant unknown
+|||||se ha creado correcatmente la maquiena||||
+
+->comando crea maquiena pup linux atraves de iso muy rapido!!!! (nos servira para parte de comprovaciones)
+el iso se ha encontrado aquí (https://forum.puppylinux.com/puppy-linux-collection)
+virt-install --name pup_vm --memory 2048 --vcpus 2 --disk size=15 --cdrom //var/lib/libvirt/images/bionicpup64-8.0-uefi.iso --import --network network:hostbridgelibvirt --vnc --os-variant unknown
+
+
+
+
+->listar los discos virtuales que se han creado al Ahora de crear las maquienas:
+virsh vol-list --details --pool images
+
+
+->Elminar la maquiena virtual creada  atraves de la ISO:
+vir las maquienas con el segiente comando, y la maquiena antes de borrarla se ha de detener:
+$ virsh list --all
+ Id   Name      State
+--------------------------
+ 4    windows   running
+ -    cirros1   shut off
+ -    cirros2   shut off
+
+elminamos la maquiena de la segiente manera:
+$ virsh undefine windows 
+Domain 'windows' has been undefined
+
+Sin embargo, antes de eliminar la MV es recomendable eliminar el disco virtual, para ello usaremos el comando:
+$ virsh vol-delete /var/lib/libvirt/images/Win10_22H2_English_x64v1.iso
+Vol /var/lib/libvirt/images/Win10_22H2_English_x64v1.iso deleted
+
+->
+
+
+
+
+.
+..
+...
