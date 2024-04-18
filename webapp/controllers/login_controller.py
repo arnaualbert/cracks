@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, make_response
+from flask import Blueprint, request, render_template, redirect, make_response, session
 import mariadb
 import own_env
 import hashlib
@@ -7,7 +7,7 @@ import hashlib
 login_module = Blueprint('login_module', __name__, template_folder='templates')
 
 def check_is_logged():
-    if request.cookies.get("username") is not None:
+    if session.get("username") is not None:
         return True
     else:
         return False
@@ -121,6 +121,7 @@ def login():
         if user_exist:
             resp = make_response(redirect("/home_user"))
             resp.set_cookie("username",username)
+            session["username"] = username
             return resp
         else:
             return redirect("/login")
@@ -166,6 +167,10 @@ def register():
 
 @login_module.route("/logout")
 def logout():
-    resp = make_response(redirect("/"))
-    resp.delete_cookie("username")
-    return resp
+    if check_is_logged():
+        resp = make_response(redirect("/"))
+        resp.delete_cookie("username")
+        session.pop("username",None)
+        return resp
+    else:
+        return redirect("/")

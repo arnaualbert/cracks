@@ -10,11 +10,11 @@ def user_kvm():
     if request.method == "GET" and check_is_logged():
         return render_template("user_kvm.html")
     else:
-        return "please log in"
+        return redirect("/login")
 
 @kvm_module.route("/kvm_create")
 def user_kvm_create():
     if request.method == "GET" and check_is_logged():
         return render_template("user_kvm_create.html")
     else:
-        return "please log in"
+        return redirect("/login")

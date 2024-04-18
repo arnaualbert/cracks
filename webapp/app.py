@@ -8,6 +8,7 @@ from controllers.storage_controller import storage_module
 
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 app.register_blueprint(login_module)
 app.register_blueprint(databases_module)
@@ -26,11 +27,4 @@ def home_user():
     if request.method == "GET" and check_is_logged():
         return render_template("home_user.html")
     else:
-        return "please log in"
-
-
-@app.route("/logout")
-def logout():
-    if request.method == "GET":
-        return redirect("/")
-    
+        return redirect("/login")
