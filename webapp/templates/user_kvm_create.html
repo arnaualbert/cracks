@@ -56,7 +56,7 @@
         <div class="col-md-8">
             <div class="border p-5 d-flex flex-column align-items-center">
                 <h2 class="mb-4">Create a Virtual Machine</h2>
-                <form action="/create_vm" method="post">
+                <form action="/kvm_create" method="post">
                     <div class="mb-3">
                         <label for="vmName" class="form-label">Virtual Machine Name:</label>
                         <input type="text" class="form-control" id="vmName" name="vmName" required>
@@ -85,6 +85,7 @@
                             <option value="path_to_iso_1">ISO Image 1</option>
                             <option value="path_to_iso_2">ISO Image 2</option>
                             <option value="path_to_iso_3">ISO Image 3</option>
+                            <option value="path_to_iso_3">bionicpup64-8.0-uefi.iso</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Create VM</button>

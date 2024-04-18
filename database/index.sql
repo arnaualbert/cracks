@@ -12,3 +12,9 @@ CREATE TABLE IF NOT EXISTS user_services (
     username VARCHAR(50),
     FOREIGN KEY (username) REFERENCES users(username)
 );
+
+CREATE TABLE IF NOT EXISTS user_kvm (
+    kvm_nam VARCHAR(20) PRIMARY KEY,
+    username VARCHAR(50),
+    FOREIGN KEY (username) REFERENCES users(username)
+);
