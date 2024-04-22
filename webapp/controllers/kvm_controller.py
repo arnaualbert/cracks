@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, make_response
+from flask import Blueprint, request, render_template, redirect, make_response, session
 from controllers.login_controller import check_is_logged
 from py_access_system.kvm_create import create_vm
 
@@ -8,7 +8,10 @@ kvm_module = Blueprint('kvm_module', __name__, template_folder='templates')
 @kvm_module.route("/kvm")
 def user_kvm():
     if request.method == "GET" and check_is_logged():
-        return render_template("user_kvm.html")
+        # return render_template("user_kvm.html")
+        username = session.get("username")
+        info = [{"kvm_name":"test5","kvm_memory":"2048","kvm_cpu":"2","kvm_iso":"bionic"},{"kvm_name":"test5","kvm_memory":"2048","kvm_cpu":"2","kvm_iso":"bionic"},]
+        return render_template("user_kvm.html",info=info)
     else:
         return redirect("/login")
 
@@ -22,8 +25,8 @@ def user_kvm_create():
         cpus = request.form.get("cpus")
         iso = request.form.get("iso")
         create_vm(vm_name,ram,cpus)
-
-        
+        username = session.get("username")
+        # info = [{"kvm_name":"test5","kvm_memory":"2048","kvm_cpu":"2","kvm_iso":"bionic"},{"kvm_name":"test5","kvm_memory":"2048","kvm_cpu":"2","kvm_iso":"bionic"}]
         return render_template("user_kvm_create.html")
     else:
         return redirect("/login")
