@@ -1,6 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, make_response, session
 from controllers.login_controller import check_is_logged
 from py_access_system.kvm_create import create_vm
+from py_access_system.kvm_delete import delete_vm
 from controllers.login_controller import get_connection
 
 kvm_module = Blueprint('kvm_module', __name__, template_folder='templates')
@@ -51,5 +52,13 @@ def user_kvm_create():
         username = session.get("username")
         # info = [{"kvm_name":"test5","kvm_memory":"2048","kvm_cpu":"2","kvm_iso":"bionic"},{"kvm_name":"test5","kvm_memory":"2048","kvm_cpu":"2","kvm_iso":"bionic"}]
         return render_template("user_kvm_create.html")
+    else:
+        return redirect("/login")
+    
+@kvm_module.route("/kvm_delete/<kvm_name>", methods=["GET", "POST"])
+def user_kvm_delete(kvm_name):
+    if request.method == "GET" and check_is_logged():
+        delete_vm(kvm_name)
+        return redirect("/kvm")
     else:
         return redirect("/login")
