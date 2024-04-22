@@ -2,22 +2,13 @@ import subprocess
 from controllers.login_controller import get_connection
 from flask import Flask, render_template, request, redirect, session
 
-def create_vm(vm_name,ram,cpus,iso):
-    command = [
-        "tsp", "virt-install",
-        "--name", vm_name,
-        "--memory", ram,
-        "--vcpus", cpus,
-        "--disk", "size=15",
-        "--cdrom", "/var/lib/libvirt/images/bionicpup64-8.0-uefi.iso",
-        "--import",
-        "--network", "network:hostbridgelibvirt",
-        "--vnc",
-        "--os-variant", "unknown"
-    ]
+def create_vm(vm_name,ram,cpus):
+
+
+    command = f"""tsp virt-install --name {vm_name} --memory {ram} --vcpus {cpus} --disk size=15 --cdrom /var/lib/libvirt/images/bionicpup64-8.0-uefi.iso --import --network network:hostbridge --vnc --os-variant unknown"""
 
     try:
-        subprocess.run(command, check=True)
+        subprocess.call(command,shell=True)
         print(f"VM {vm_name} created successfully.")
         username = session.get("username")
         # Insertar datos en la tabla user_kvm

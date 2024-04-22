@@ -21,7 +21,7 @@ def user_kvm_create():
         ram = request.form.get("ram")
         cpus = request.form.get("cpus")
         iso = request.form.get("iso")
-        create_vm(vm_name,ram,cpus,iso)
+        create_vm(vm_name,ram,cpus)
 
         
         return render_template("user_kvm_create.html")
