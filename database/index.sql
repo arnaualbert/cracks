@@ -14,7 +14,10 @@ CREATE TABLE IF NOT EXISTS user_services (
 );
 
 CREATE TABLE IF NOT EXISTS user_kvm (
-    kvm_nam VARCHAR(20) PRIMARY KEY,
+    kvm_name VARCHAR(50) PRIMARY KEY,
+    kvm_memory VARCHAR(10),
+    kvm_cpus VARCHAR(10),
+    kvm_iso VARCHAR(100),
     username VARCHAR(50),
     FOREIGN KEY (username) REFERENCES users(username)
 );
