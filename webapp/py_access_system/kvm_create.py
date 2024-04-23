@@ -1,7 +1,8 @@
 import subprocess
 from controllers.login_controller import get_connection
 from flask import Flask, render_template, request, redirect, session
-
+import os
+import own_env
 def create_vm(kvm_name,kvm_memory,kvm_cpus):
 
 
@@ -13,7 +14,7 @@ def create_vm(kvm_name,kvm_memory,kvm_cpus):
         username = session.get("username")
         # Insertar datos en la tabla user_kvm
         insert_kvm(kvm_name, kvm_memory, kvm_cpus, kvm_iso, username)
-        print("ASsadsad")
+        # os.chmod(f"/var/lib/libvirt/images/pepe5.qcow2",777)
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
 

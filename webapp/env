@@ -1,3 +1,4 @@
 DATABASE=asix
 USERDB=admin
 PASSWORD=password
+PASSWORD_ROOT=
