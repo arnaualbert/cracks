@@ -1,5 +1,6 @@
 import subprocess
 import re
+import xml.etree.ElementTree as ET
 
 def get_br0_ip():
     ip_add = subprocess.check_output(["ifconfig","br0"])
@@ -19,13 +20,28 @@ def get_xml(vm_name):
 
 def get_mac(vm_name):
     xml_parse = get_xml(vm_name)
-
-    print(xml_parse)
-
-print(get_mac("1610master"))
+    et_parser = ET.fromstring(xml_parse)
+    interface = et_parser.find(".//interface")
+    mac_address = interface.find("mac").attrib["address"]
+    return mac_address
 
 def do_nmap_analysis():
-    pass
+    ip_to_parse = get_br0_ip()
+    subprocess.run(["nmap","-sP",ip_to_parse],stdout = subprocess.DEVNULL)
 
-def get_ip():
-    pass
+def get_ip_kvm(vm_name):
+    do_nmap_analysis()
+    mac_add = get_mac(vm_name)
+    out_arp = subprocess.check_output(["arp","-a"])
+    dec = out_arp.decode()
+    list_of_parsed_ip = dec.split("\n")
+    for ip_info in list_of_parsed_ip:
+        if mac_add in ip_info:
+            ip_pattern = r'\((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\)'
+            match = re.search(ip_pattern, ip_info)
+            if match:
+                return match.group(1)
+            else:
+                return None
+
+print(get_ip_kvm("1605master"))

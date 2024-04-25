@@ -1,4 +1,4 @@
-#!/home/arnaualbert/Desktop/cracks/venv/bin/python3
+#!/home/arnau/Desktop/cracks/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
