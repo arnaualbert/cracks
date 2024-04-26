@@ -3,26 +3,38 @@ from controllers.login_controller import get_connection
 from flask import Flask, render_template, request, redirect, session
 import os
 import own_env
+
+
 def create_vm(kvm_name,kvm_memory,kvm_cpus):
-
-
     command = f"""tsp virt-install --name {kvm_name} --memory {kvm_memory} --vcpus {kvm_cpus} --disk size=15 --cdrom /var/lib/libvirt/images/bionicpup64-8.0-uefi.iso --import --network network:hostbridge --vnc --os-variant unknown"""
     kvm_iso = "bionicpup64-8.0-uefi.iso"
     try:
         subprocess.call(command,shell=True)
         print(f"VM {kvm_name} created successfully.")
         username = session.get("username")
-        # Insertar datos en la tabla user_kvm
         insert_kvm(kvm_name, kvm_memory, kvm_cpus, kvm_iso, username)
-        # os.chmod(f"/var/lib/libvirt/images/pepe5.qcow2",777)
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
 
 
-def insert_kvm(kvm_name, kvm_memory, kvm_cpus, kvm_iso, username):
+def insert_kvm(kvm_name: str, kvm_memory: int, kvm_cpus: int, kvm_iso: str, username: str):
+    """
+    Inserta información de una máquina virtual en la base de datos.
+
+    Args:
+        kvm_name (str): Nombre de la máquina virtual.
+        kvm_memory (int): Cantidad de memoria asignada a la máquina virtual (en MB).
+        kvm_cpus (int): Número de CPUs asignadas a la máquina virtual.
+        kvm_iso (str): Ruta del archivo ISO utilizado para instalar el sistema operativo en la máquina virtual.
+        username (str): Nombre de usuario asociado a la máquina virtual.
+
+    Returns:
+        None
+    """
     conn = get_connection()
     cur = conn.cursor()
-    print("asdsds")
-    cur.execute("INSERT INTO user_kvm (kvm_name, kvm_memory, kvm_cpus, kvm_iso, username) VALUES (?, ?, ?, ?, ?)",(kvm_name, kvm_memory, kvm_cpus, kvm_iso, username))
+    cur.execute("INSERT INTO user_kvm (kvm_name, kvm_memory, kvm_cpus, kvm_iso, username) VALUES (?, ?, ?, ?, ?)",
+                (kvm_name, kvm_memory, kvm_cpus, kvm_iso, username))
     conn.commit()
     conn.close()
+

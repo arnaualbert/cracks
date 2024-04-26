@@ -59,7 +59,7 @@ def do_nmap_analysis():
     ip_to_parse = get_br0_ip()
     subprocess.run(["nmap","-sP",ip_to_parse],stdout = subprocess.DEVNULL)
 
-def get_ip_kvm(vm_name: str) -> str|any|None:
+def get_ip_kvm(vm_name: str) -> str|None:
     """
     Obtiene la dirección IP de la máquina virtual especificada en la red.
     
