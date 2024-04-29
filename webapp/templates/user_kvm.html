@@ -66,7 +66,7 @@
             <p id="show_ip_{{ kvm.kvm_name }}"></p>
             <p class="card-text">Especificaciones: {{ kvm.kvm_memory }}mb, {{ kvm.kvm_cpu }} CPU's.</p>
             <a href="#" class="btn btn-primary start-kvm-btn" data-kvm-name="{{ kvm.kvm_name }}">Iniciar</a>
-            <a href="#" class="btn btn-danger">Detener</a>
+            <a href="#" class="btn btn-danger stop-kvm-btn" data-kvm-name="{{ kvm.kvm_name }}">Detener</a>
             <a href="/kvm_delete/{{kvm.kvm_name}}" class="btn btn-warning">Eliminar</a>
           </div>
         </div>
@@ -92,9 +92,25 @@
         type: 'GET',
         success: function(response) {
           // Assuming response contains the IP address
-          console.log('IP Address:', response);
+          console.log('IP Address:', response.ip);
           // Update the HTML with the received IP address
           $("#show_ip_" + kvmName).text("IP Address: " + response.ip);
+        },
+        error: function(xhr, status, error) {
+          console.error(xhr.responseText);
+          // Handle error
+        }
+      });
+    });
+    $(".stop-kvm-btn").click(function(){
+      var kvmName = $(this).data('kvm-name');
+      $.ajax({
+        url: '/stop_kvm/' + kvmName,
+        type: 'GET',
+        success: function(response) {
+          // Assuming response contains the IP address
+          // Update the HTML with the received IP address
+          $("#show_ip_" + kvmName).text("");
         },
         error: function(xhr, status, error) {
           console.error(xhr.responseText);

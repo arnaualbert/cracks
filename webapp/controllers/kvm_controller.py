@@ -3,7 +3,7 @@ from controllers.login_controller import check_is_logged
 from py_access_system.kvm_create import create_vm, create_config_vm
 from py_access_system.kvm_delete import delete_vm
 from controllers.login_controller import get_connection
-from py_access_system.kvm_start import start_vm
+from py_access_system.kvm_start import start_vm, stop_vm
 from py_access_system.kvm_get_ip_by_vm_name import get_ip_kvm
 
 kvm_module = Blueprint('kvm_module', __name__, template_folder='templates')
@@ -77,3 +77,9 @@ def start_kvm(kvm_name):
             ip_kvm = get_ip_kvm(kvm_name)
             print(ip_kvm)
         return {"ip":ip_kvm}
+    
+@kvm_module.route("/stop_kvm/<kvm_name>",methods=["GET"])
+def stop_kvm(kvm_name):
+    if request.method =="GET" and check_is_logged():
+        stop_vm(kvm_name)
+        return {"ip":None}
