@@ -4,6 +4,7 @@ sudo apt-get update
 sudo apt install mariadb-server
 sudo apt-get install libmariadb-dev
 sudo apt install python3-pip
+sudo apt install python3-flask
 sudo apt install python3.10-venv
 python3 -m venv venv
 source venv/bin/activate
