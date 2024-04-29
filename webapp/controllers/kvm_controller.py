@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, redirect, make_response, session
 from controllers.login_controller import check_is_logged
-from py_access_system.kvm_create import create_vm
+from py_access_system.kvm_create import create_vm, create_config_vm
 from py_access_system.kvm_delete import delete_vm
 from controllers.login_controller import get_connection
 from py_access_system.kvm_start import start_vm
@@ -47,12 +47,13 @@ def user_kvm_create():
             return render_template("user_kvm_create.html")
     if request.method == "POST" and check_is_logged():
         vm_name = request.form.get("vmName")
+        vm_password = request.form.get("vmPassword")
+        vm_hostname = request.form.get("vmHostname")
         ram = request.form.get("ram")
         cpus = request.form.get("cpus")
         iso = request.form.get("iso")
-        create_vm(vm_name,ram,cpus)
-        username = session.get("username")
-        # info = [{"kvm_name":"test5","kvm_memory":"2048","kvm_cpu":"2","kvm_iso":"bionic"},{"kvm_name":"test5","kvm_memory":"2048","kvm_cpu":"2","kvm_iso":"bionic"}]
+        img_disk_info = create_config_vm(vm_hostname,vm_password)
+        create_vm(vm_name,ram,cpus,iso,img_disk_info)
         return render_template("user_kvm_create.html")
     else:
         return redirect("/login")

@@ -62,6 +62,14 @@
                         <input type="text" class="form-control" id="vmName" name="vmName" required>
                     </div>
                     <div class="mb-3">
+                      <label for="vmName" class="form-label">Hostname:</label>
+                      <input type="text" class="form-control" id="vmHostname" name="vmHostname" required>
+                  </div>
+                    <div class="mb3">
+                      <label for="password_user" class="form-label">Password VM:</label>
+                      <input type="password" class="form-control" id="vmPassword" name="vmPassword" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="ram" class="form-label">Memory (RAM):</label>
                         <select class="form-select" id="ram" name="ram" required>
                             <option value="1024">1 GB</option>
@@ -82,10 +90,10 @@
                     <div class="mb-3">
                         <label for="iso" class="form-label">ISO Image:</label>
                         <select class="form-select" id="iso" name="iso" required>
-                            <option value="path_to_iso_1">ISO Image 1</option>
-                            <option value="path_to_iso_2">ISO Image 2</option>
-                            <option value="path_to_iso_3">ISO Image 3</option>
-                            <option value="path_to_iso_3">bionicpup64-8.0-uefi.iso</option>
+                            <option value="jammy">jammy 22.04</option>
+                            <option value="xenial">xenial 20.04</option>
+                            <option value="mantic">mantic 23.04</option>
+                            <option value="focal">focal 20.04</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Create VM</button>
