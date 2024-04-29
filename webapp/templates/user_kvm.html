@@ -63,8 +63,9 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">{{ kvm.kvm_name }}</h5>
+            <p id="show_ip_{{ kvm.kvm_name }}"></p>
             <p class="card-text">Especificaciones: {{ kvm.kvm_memory }}mb, {{ kvm.kvm_cpu }} CPU's.</p>
-            <a href="/start_kvm/{{kvm.kvm_name}}" class="btn btn-primary">Iniciar</a>
+            <a href="#" class="btn btn-primary start-kvm-btn" data-kvm-name="{{ kvm.kvm_name }}">Iniciar</a>
             <a href="#" class="btn btn-danger">Detener</a>
             <a href="/kvm_delete/{{kvm.kvm_name}}" class="btn btn-warning">Eliminar</a>
           </div>
@@ -81,7 +82,28 @@
   <div class="position-fixed bottom-0 end-0 m-4">
     <a href="/kvm_create" class="btn btn-primary btn-lg">Create KVM</a>
   </div>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $(".start-kvm-btn").click(function(){
+      var kvmName = $(this).data('kvm-name');
+      $.ajax({
+        url: '/start_kvm/' + kvmName,
+        type: 'GET',
+        success: function(response) {
+          // Assuming response contains the IP address
+          console.log('IP Address:', response);
+          // Update the HTML with the received IP address
+          $("#show_ip_" + kvmName).text("IP Address: " + response.ip);
+        },
+        error: function(xhr, status, error) {
+          console.error(xhr.responseText);
+          // Handle error
+        }
+      });
+    });
+  });
+</script>  
 </body>
 
 </html>

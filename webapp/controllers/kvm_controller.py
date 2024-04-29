@@ -70,11 +70,10 @@ def user_kvm_delete(kvm_name):
 @kvm_module.route("/start_kvm/<kvm_name>",methods=["GET","POST"])
 def start_kvm(kvm_name):
     if request.method == "GET" and check_is_logged():
+        print(kvm_name)
         start_vm(kvm_name)
-        ip_kvm = get_ip_kvm(kvm_module)
+        ip_kvm = get_ip_kvm(kvm_name)
         while ip_kvm == None:
-            ip_kvm = get_ip_kvm(kvm_module)
+            ip_kvm = get_ip_kvm(kvm_name)
             print(ip_kvm)
-        return ip_kvm
-    else:
-        return redirect("/login")
+        return {"ip":ip_kvm}
