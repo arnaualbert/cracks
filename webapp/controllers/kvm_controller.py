@@ -1,9 +1,9 @@
-from flask import Blueprint, request, render_template, redirect, make_response, session
+from flask import Blueprint, request, render_template, redirect, make_response, session, jsonify
 from controllers.login_controller import check_is_logged
 from py_access_system.kvm_create import create_vm, create_config_vm
 from py_access_system.kvm_delete import delete_vm
 from controllers.login_controller import get_connection
-from py_access_system.kvm_start import start_vm, stop_vm
+from py_access_system.kvm_start import start_vm, stop_vm, get_all_vm
 from py_access_system.kvm_get_ip_by_vm_name import get_ip_kvm
 
 kvm_module = Blueprint('kvm_module', __name__, template_folder='templates')
@@ -41,10 +41,25 @@ def select_kvm():
         return info_kvm
 
 
+
+@kvm_module.route('/get_session_data')
+def get_session_data():
+    return jsonify(session.get("all_kvm"))
+
+
 @kvm_module.route("/kvm_create", methods=["GET", "POST"])
 def user_kvm_create():
     if request.method == "GET" and check_is_logged():
-            return render_template("user_kvm_create.html")
+            if session.get("all_kvm") is None:
+                all_vm_names = get_all_vm()
+                session["all_kvm"] = all_vm_names
+                print(session.get("all_kvm"))
+            else:
+                session.pop("all_kvm",None)
+                all_vm_names = get_all_vm()
+                session["all_kvm"] = all_vm_names
+                print(session.get("all_kvm"))
+            return render_template("user_kvm_create.html", all_vm_names=all_vm_names)
     if request.method == "POST" and check_is_logged():
         vm_name = request.form.get("vmName")
         vm_password = request.form.get("vmPassword")
@@ -54,7 +69,9 @@ def user_kvm_create():
         iso = request.form.get("iso")
         img_disk_info = create_config_vm(vm_hostname,vm_password)
         create_vm(vm_name,ram,cpus,iso,img_disk_info)
-        return render_template("user_kvm_create.html")
+        stop_vm(vm_name)
+        # return render_template("user_kvm_create.html")
+        return redirect("/kvm")
     else:
         return redirect("/login")
     

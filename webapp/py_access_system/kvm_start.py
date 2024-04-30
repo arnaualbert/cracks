@@ -1,4 +1,18 @@
 import subprocess
+from controllers.login_controller import get_connection
+
+def get_all_vm():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT kvm_name FROM user_kvm")
+    rows = cursor.fetchall()
+    if rows:
+        conn.close()
+        return rows
+    else:
+        conn.close()
+        return []
+
 
 def start_vm(kvm_name):
     try:

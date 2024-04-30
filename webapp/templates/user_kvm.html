@@ -63,11 +63,14 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">{{ kvm.kvm_name }}</h5>
+            <div class="spinner-border load-kvm-{{ kvm.kvm_name }}" role="status" style="display: none;">
+              <span class="sr-only">Loading...</span>
+            </div>
             <p id="show_ip_{{ kvm.kvm_name }}"></p>
             <p class="card-text">Especificaciones: {{ kvm.kvm_memory }}mb, {{ kvm.kvm_cpu }} CPU's.</p>
-            <a href="#" class="btn btn-primary start-kvm-btn" data-kvm-name="{{ kvm.kvm_name }}">Iniciar</a>
-            <a href="#" class="btn btn-danger stop-kvm-btn" data-kvm-name="{{ kvm.kvm_name }}">Detener</a>
-            <a href="/kvm_delete/{{kvm.kvm_name}}" class="btn btn-warning">Eliminar</a>
+              <a href="#" class="btn btn-primary start-kvm-btn" id="start-{{ kvm.kvm_name }}" data-kvm-name="{{ kvm.kvm_name }}">Iniciar</a>
+              <a href="#" class="btn btn-danger stop-kvm-btn" id="stop-{{ kvm.kvm_name }}" data-kvm-name="{{ kvm.kvm_name }}" hidden>Detener</a>
+              <a href="/kvm_delete/{{kvm.kvm_name}}" class="btn btn-warning">Eliminar</a>
           </div>
         </div>
       </div>
@@ -87,6 +90,11 @@
   $(document).ready(function(){
     $(".start-kvm-btn").click(function(){
       var kvmName = $(this).data('kvm-name');
+      var starBtn = $("#start-" + kvmName);
+      var stopBtn = $("#stop-" + kvmName);
+      var spinner = $(".load-kvm-" + kvmName);
+      spinner.css("display", "block");
+      starBtn.attr("hidden",true)
       $.ajax({
         url: '/start_kvm/' + kvmName,
         type: 'GET',
@@ -94,7 +102,9 @@
           // Assuming response contains the IP address
           console.log('IP Address:', response.ip);
           // Update the HTML with the received IP address
-          $("#show_ip_" + kvmName).text("IP Address: " + response.ip);
+          spinner.css("display", "none");
+          $("#show_ip_" + kvmName).text("Login: ssh ubuntu@" + response.ip);
+          stopBtn.removeAttr("hidden")
         },
         error: function(xhr, status, error) {
           console.error(xhr.responseText);
@@ -104,13 +114,15 @@
     });
     $(".stop-kvm-btn").click(function(){
       var kvmName = $(this).data('kvm-name');
+      var starBtn = $("#start-" + kvmName);
+      var stopBtn = $("#stop-" + kvmName);
+      stopBtn.attr("hidden",true)
       $.ajax({
         url: '/stop_kvm/' + kvmName,
         type: 'GET',
         success: function(response) {
-          // Assuming response contains the IP address
-          // Update the HTML with the received IP address
           $("#show_ip_" + kvmName).text("");
+          starBtn.removeAttr("hidden")
         },
         error: function(xhr, status, error) {
           console.error(xhr.responseText);
