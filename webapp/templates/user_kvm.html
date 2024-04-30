@@ -67,6 +67,7 @@
               <span class="sr-only">Loading...</span>
             </div>
             <p id="show_ip_{{ kvm.kvm_name }}"></p>
+            <p id="show_login_{{ kvm.kvm_name }}"></p>
             <p class="card-text">Especificaciones: {{ kvm.kvm_memory }}mb, {{ kvm.kvm_cpu }} CPU's.</p>
               <a href="#" class="btn btn-primary start-kvm-btn" id="start-{{ kvm.kvm_name }}" data-kvm-name="{{ kvm.kvm_name }}">Iniciar</a>
               <a href="#" class="btn btn-danger stop-kvm-btn" id="stop-{{ kvm.kvm_name }}" data-kvm-name="{{ kvm.kvm_name }}" hidden>Detener</a>
@@ -101,7 +102,8 @@
         success: function(response) {
           console.log('IP Address:', response.ip);
           spinner.css("display", "none");
-          $("#show_ip_" + kvmName).text("Login: ssh ubuntu@" + response.ip);
+          $("#show_ip_" + kvmName).text("IP: " + response.ip);
+          $("#show_login_" + kvmName).text("Login: ssh ubuntu@" + response.ip);
           stopBtn.removeAttr("hidden")
         },
         error: function(xhr, status, error) {
@@ -119,6 +121,7 @@
         type: 'GET',
         success: function(response) {
           $("#show_ip_" + kvmName).text("");
+          $("#show_login_" + kvmName).text("");
           starBtn.removeAttr("hidden")
         },
         error: function(xhr, status, error) {
