@@ -99,16 +99,13 @@
         url: '/start_kvm/' + kvmName,
         type: 'GET',
         success: function(response) {
-          // Assuming response contains the IP address
           console.log('IP Address:', response.ip);
-          // Update the HTML with the received IP address
           spinner.css("display", "none");
           $("#show_ip_" + kvmName).text("Login: ssh ubuntu@" + response.ip);
           stopBtn.removeAttr("hidden")
         },
         error: function(xhr, status, error) {
           console.error(xhr.responseText);
-          // Handle error
         }
       });
     });
@@ -126,7 +123,6 @@
         },
         error: function(xhr, status, error) {
           console.error(xhr.responseText);
-          // Handle error
         }
       });
     });
