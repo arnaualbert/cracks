@@ -55,7 +55,7 @@
       <div class="col-md-8">
         <div class="border p-5 d-flex flex-column align-items-center">
           <h2 class="mb-4">Create a CMS Service</h2>
-          <form action="/create_cms" method="post">
+          <form action="/service_create" method="post">
             <div class="mb-3">
               <label for="cmsType" class="form-label">CMS Type:</label>
               <select class="form-select" id="cmsType" name="cmsType" required>
@@ -66,16 +66,20 @@
               </select>
             </div>
             <div class="mb-3">
-              <label for="cmsAdminUser" class="form-label">Admin User Name:</label>
-              <input type="text" class="form-control" id="cmsAdminUser" name="cmsAdminUser" required>
+              <label for="cmsNmae" class="form-label">CMS Name:</label>
+              <input type="text" class="form-control" id="cmsNmae" name="cmsNmae" required>
             </div>
             <div class="mb-3">
-              <label for="cmsAdminPassword" class="form-label">Admin Password:</label>
-              <input type="password" class="form-control" id="cmsAdminPassword" name="cmsAdminPassword" required>
+              <label for="cmsdbUser" class="form-label">Db User:</label>
+              <input type="text" class="form-control" id="cmsdbUser" name="cmsdbUser" required>
             </div>
             <div class="mb-3">
-              <label for="cmsDomain" class="form-label">Domain (optional):</label>
-              <input type="text" class="form-control" id="cmsDomain" name="cmsDomain">
+              <label for="cmsdbPassword" class="form-label">CMS db Password:</label>
+              <input type="password" class="form-control" id="cmsdbPassword" name="cmsdbPassword" required>
+            </div>
+            <div class="mb-3">
+              <label for="cmsrootPassword" class="form-label">CMS root Password:</label>
+              <input type="password" class="form-control" id="cmsrootPassword" name="cmsrootPassword" required>
             </div>
             <!-- Add more fields as needed -->
             <button type="submit" class="btn btn-primary">Create CMS</button>
