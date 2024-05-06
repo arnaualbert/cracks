@@ -8,7 +8,7 @@ import own_env
 
 def create_config_vm(hostname, password):
     config_word_list = ["#cloud-config",f"password: {password}", "chpasswd: { expire: False }", "ssh_pwauth: True", f"hostname: {hostname}"]
-    file_path = "/home/arnau/Desktop/config-1.txt"    
+    file_path = "/home/mohamed/Desktop/config-1.txt"    
 
     if not os.path.exists(file_path):
         # If the file doesn't exist, create it

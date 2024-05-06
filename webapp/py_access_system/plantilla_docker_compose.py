@@ -1,6 +1,5 @@
 import subprocess
 from controllers.login_controller import get_connection
-from flask import Flask, render_template, request, redirect, session
 import os
 import own_env
 
@@ -17,7 +16,7 @@ services:
     image: mariadb:10.6.4-focal
     # If you really want to use MySQL, uncomment the following line
     #image: mysql:8.0.27
-    
+
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
       - db_data:/var/lib/mysql
@@ -87,7 +86,9 @@ volumes:
   cms_data:
 '''
     elif cms_type=="joomla":
-        template = f'''       
+        template = f'''
+version: '3.1'
+       
 services:
   joomladb:
     container_name: joomladb_{cms_name}_{user_name}

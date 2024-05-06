@@ -7,11 +7,24 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS user_services (
-    service_id INT PRIMARY KEY,
-    service_name VARCHAR(100),
+    service_name VARCHAR(100) PRIMARY KEY,
+    cms_type VARCHAR(15),
+    cms_db_user VARCHAR(20),
+    cms_db_password VARCHAR(15),
+    cms_root_password VARCHAR(15),
+    ip VARCHAR(15),
+    puerto INT(8),
+    state VARCHAR(10),
     username VARCHAR(50),
     FOREIGN KEY (username) REFERENCES users(username)
 );
+
+-- CREATE TABLE IF NOT EXISTS user_services (
+--     service_id INT PRIMARY KEY,
+--     service_name VARCHAR(100),
+--     username VARCHAR(50),
+--     FOREIGN KEY (username) REFERENCES users(username)
+-- );
 
 CREATE TABLE IF NOT EXISTS user_kvm (
     kvm_name VARCHAR(50) PRIMARY KEY,
