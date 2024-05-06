@@ -2,7 +2,7 @@ import subprocess
 import re
 import xml.etree.ElementTree as ET
 
-def get_br0_ip() -> str|None:
+def get_br0_ip():# -> str|None:
     """
     Obtiene la dirección IP y la máscara de subred de la interfaz de red 'br0'.
     Calcula la máscara de subred en formato CIDR y devuelve la dirección IP en ese formato,
@@ -22,7 +22,7 @@ def get_br0_ip() -> str|None:
     else:
         return None
 
-def get_xml(vm_name: str) -> str:
+def get_xml(vm_name: str):# -> str:
     """
     Obtiene el XML que describe la configuración de la máquina virtual especificada.
     
@@ -35,7 +35,7 @@ def get_xml(vm_name: str) -> str:
     output_xml = subprocess.check_output(["virsh", f"dumpxml --domain {vm_name}"])
     return output_xml.decode()
 
-def get_mac(vm_name: str) -> str:
+def get_mac(vm_name: str):# -> str:
     """
     Obtiene la dirección MAC de la interfaz de red de la máquina virtual especificada.
     
@@ -59,7 +59,7 @@ def do_nmap_analysis():
     ip_to_parse = get_br0_ip()
     subprocess.run(["nmap","-sP",ip_to_parse],stdout = subprocess.DEVNULL)
 
-def get_ip_kvm(vm_name: str) -> str|None:
+def get_ip_kvm(vm_name: str):# -> str|None:
     """
     Obtiene la dirección IP de la máquina virtual especificada en la red.
     

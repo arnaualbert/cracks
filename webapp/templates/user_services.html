@@ -51,10 +51,88 @@
     <h1>¡Bienvenido al servicio de CMS!</h1>
   </div>
 
+
+
+  
+  <div class="container mt-4">
+    <h2>Lista de Servicios</h2>
+
+    {% for service in info %}
+    {% if loop.index0 % 2 == 0 %}
+
+    <div class="row mt-3">
+    {% endif %}
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        
+                        <div class="col-md-12 border border-light bg-warning-subtle">
+                            <h5 class="card-title text-center"><strong>Service Name: <span style="color: red;">{{ service.service_name }}</span></strong></h5>
+                            <p class="card-text"><strong>Tipo de CMS:</strong> {{ service.cms_type }}</p>
+                            <p class="card-text"><strong>Usuario de la base de datos:</strong> {{ service.cms_db_user }}</p>
+                            <p class="card-text"><strong>Contraseña de la base de datos:</strong> {{ service.cms_db_password }}</p>
+                            <p class="card-text"><strong>Contraseña de root:</strong> {{ service.cms_root_password }}</p>
+                            <p class="card-text"><strong>IP:</strong> {{ service.ip }}</p>
+                            <p class="card-text"><strong>Puerto:</strong> {{ service.puerto }}</p>
+                            <p class="card-text"><strong>Estado:</strong> {{ service.state }}</p>
+                        </div>
+
+                    </div>
+
+                    <div class="row">     
+                          <div class="col-md-12 border border-info">
+                            {% if service.cms_type == "wordpress" %}
+                                <img src="../static/wordpress.png" class="img-fluid cms-image" alt="WordPress">
+                            {% elif service.cms_type == "drupal" %}
+                                <img src="../static/drupal.png" class="img-fluid cms-image" alt="Drupal">
+                            {% elif service.cms_type == "joomla" %}
+                                <img src="../static/joomla.png" class="img-fluid cms-image" alt="Joomla">
+                            {% elif service.cms_type == "prestashop" %}
+                                <img src="../static/prestashop.png" class="img-fluid cms-image" alt="PrestaShop">
+                            {% endif %}
+                          </div>
+                    </div>  
+<br>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            {% if service.state == "started" %}
+                            <a href="/stop_service/{{ service.service_name }}" class="btn btn-danger stop-service-btn">Detener</a>
+                            <a href="/delete_service/{{ service.service_name }}" class="btn btn-warning">Eliminar</a>
+                            
+                            <!-- URL --> 
+                            <h4>URL Access CMS: <a href="http://{{ service.ip }}:{{ service.puerto }}" target="_blank">http://{{ service.ip }}:{{ service.puerto }}</a></h4>   
+                            
+                            {% elif service.state == "stopped" %}
+                                <a href="/start_service/{{ service.service_name }}" class="btn btn-primary start-service-btn">Iniciar</a>
+                                <a href="/delete_service/{{ service.service_name }}" class="btn btn-warning">Eliminar</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% if loop.index0 % 2 == 1 or loop.last %}
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+
+     
+
+
+     
+
+
+
   <div class="position-fixed bottom-0 end-0 m-4">
     <a href="/service_create" class="btn btn-primary btn-lg">Create CMS</a>
   </div>
 
+
+  
 </body>
 
 </html>
