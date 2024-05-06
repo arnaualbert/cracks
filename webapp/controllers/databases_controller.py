@@ -18,3 +18,11 @@ def user_database_create():
         return render_template("user_database_create.html")
     else:
         return redirect("/login")
+    
+
+@databases_module.route("/create_database")
+def user_create_database():
+    if request.method == "GET" and check_is_logged():
+        return redirect("/database")
+    else:
+        return redirect("/login")

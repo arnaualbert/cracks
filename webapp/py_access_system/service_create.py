@@ -3,50 +3,119 @@ from controllers.login_controller import get_connection
 from flask import Flask, render_template, request, redirect, session
 import os
 import own_env
+from py_access_system.plantilla_docker_compose import create_docker_compose_template
+
+
+#comintario
+
+
+def get_current_user():
+    return os.getlogin()
+
+def get_local_ip_address():
+    try:
+        result = subprocess.run(['hostname', '-I'], capture_output=True, text=True)
+        ip_addresses = result.stdout.strip().split()
+        return ip_addresses[0] if ip_addresses else None
+    except Exception as e:
+        print(f"Error al obtener la dirección IP local: {e}")
+        return None
+
 
 def create_docker_compose(cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password):
-    docker_compose_content = create_docker_compose_template(cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password)
-    with open("docker-compose.yml", "w") as f:
-        f.write(docker_compose_content)
+    #ahora lo que vamos a hacer es crear un directrio de trabajo donde vamos a levantar el docker compose
+    # # # cms_type="wordpress"
+    # # # cms_name="benhammou"
+    # # # cms_db_user="alumne"
+    # # # cms_db_password="alumne"
+    # # # cms_root_password="alumne"
+    username = session.get("username")
+    puerto_libre = get_puerto_libre()
 
-def create_service():
-    pass
+    file_path=get_path(cms_name)
+    try:
+        os.makedirs(file_path, exist_ok=True)
+        print(f"Directorio(s) '{file_path}' creado(s) correctamente.")
+        
+        volume_db_path = os.path.join(file_path, "db_data")
+        volume_cms_path = os.path.join(file_path, "cms_data")
+        os.makedirs(volume_db_path, exist_ok=True)
+        os.makedirs(volume_cms_path, exist_ok=True)
+    except Exception as e:
+        print(f"Error al crear el directorio: {e}")
+    
+    docker_compose_content = create_docker_compose_template(username, cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password, puerto_libre)
+    docker_compose_file = os.path.join(file_path, "docker-compose.yml")
 
-def insert_service():
-    pass
+    try:
+        with open(docker_compose_file, "w") as f:
+            f.write(docker_compose_content)
+        print(f"Archivo Docker Compose '{docker_compose_file}' creado correctamente.")
+    except Exception as e:
+        print(f"Error al escribir el archivo Docker Compose: {e}")
+    
+    path_file_docker_compose=f"{file_path}/docker-compose.yml"
+  
+    return path_file_docker_compose
+
+def get_path(cms_name):
+    username = session.get("username")
+    current_user = get_current_user()
+    file_path = f"/home/{current_user}/docker/{cms_name}-{username}"
+    return file_path
+
+def create_cms(path_docker_compose,username, cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password):
+    original_directory = os.getcwd()
+    try:
+        # Obtenemos la contraseña del administrador
+        passw = own_env.getenv("PASSWORD_ROOT")
 
 
-def create_docker_compose_template(cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password):
-    template = f'''
-services:
-  db:
-    image: {"mariadb:10.6.4-focal" if cms_type == "mariadb" else "mysql:8.0.27"}
-    command: '--default-authentication-plugin=mysql_native_password'
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD={cms_root_password}
-      - MYSQL_DATABASE={cms_name}
-      - MYSQL_USER={cms_db_user}
-      - MYSQL_PASSWORD={cms_db_password}
-    expose:
-      - 3306
-      - 33060
-  wordpress:
-    image: wordpress:latest
-    volumes:
-      - wp_data:/var/www/html
-    ports:
-      - 8083:80
-    restart: always
-    environment:
-      - WORDPRESS_DB_HOST=db
-      - WORDPRESS_DB_USER={cms_db_user}
-      - WORDPRESS_DB_PASSWORD={cms_db_password}
-      - WORDPRESS_DB_NAME={cms_name}
-volumes:
-  db_data:
-  wp_data:
-'''
-    return template
+        # Cambiar al directorio donde se encuentra el archivo Docker Compose
+        os.chdir(os.path.dirname(path_docker_compose))
+
+        # Ejecutar el comando docker-compose
+        command = f"""echo '{passw}' | sudo -S docker-compose up -d"""
+        subprocess.run(command, shell=True, check=True)
+        print("Docker Compose levantado exitosamente.")
+
+        os.chdir(original_directory)  
+
+        puerto=get_puerto_libre()
+        local_ip_address = get_local_ip_address()
+
+
+
+        insert_service(username, cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password,local_ip_address, puerto)
+    except Exception as e:
+        print(f"Error al levantar Docker Compose: {e}")
+    
+def insert_service(username:str ,cms_type:str, cms_name:str, cms_db_user:str, cms_db_password:str, cms_root_password:str, ip:str, puerto:int):
+    print("ha llegado aquí")
+    conn = get_connection()
+    cur = conn.cursor()
+    print("ha llegado aquí1")
+    cur.execute("INSERT INTO user_services (service_name, cms_type, cms_db_user, cms_db_password, cms_root_password, ip, puerto, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (cms_name, cms_type, cms_db_user, cms_db_password, cms_root_password, ip, puerto, username))
+    conn.commit()
+    conn.close()
+    print("ha llegado aquí2")
+
+def get_puerto_libre():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # Consguimos los puertos ocupados en la tabla
+    cur.execute("SELECT puerto FROM user_services")
+    puertos_ocupados = [row[0] for row in cur.fetchall()]
+
+    # Buscamos el puerto libre más bajo dentro del rango
+    puerto_libre = None
+    for puerto in range(8081, 9001):
+        if puerto not in puertos_ocupados:
+            puerto_libre = puerto
+            break
+
+    conn.close()
+
+    return puerto_libre
