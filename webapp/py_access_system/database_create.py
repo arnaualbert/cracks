@@ -25,8 +25,8 @@ def create_database(database_type,database_password,database_name,database_user)
         command = f"""echo '{passw}' | sudo -S docker compose up -d"""
         subprocess.run(command, shell=True, check=True) 
         os.chdir(original_directory)
-    elif database_type == "postgress":
-        pass
+    # elif database_type == "postgress":
+    #     pass
 
 
 
