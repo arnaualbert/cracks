@@ -3,7 +3,7 @@ from py_access_system.service_create import get_path
 import subprocess
 import os
 import own_env
-import shutil
+#import shutil
 
 
 def delete_service(service_name):
@@ -16,12 +16,15 @@ def delete_service(service_name):
         os.chdir(os.path.dirname(f"""{path_docker_compose}/docker-compose.yml"""))
 
         # Ejecutar el comando docker-compose
-        command = f"""echo '{passw}' | sudo -S docker-compose down"""
+        command = f"""docker compose down"""
         subprocess.run(command, shell=True, check=True)
         print("Docker Compose deleted successfully.")
 
         # Eliminar el directorio que contiene el docker-compose.yaml
-        shutil.rmtree(path_docker_compose)
+        command = f"echo '{passw}' | sudo -S rm -rf {path_docker_compose}"
+
+        # Ejecutamos el comando
+        subprocess.run(command, shell=True)
         print("Directory deleted successfully.")
 
         os.chdir(original_directory) 

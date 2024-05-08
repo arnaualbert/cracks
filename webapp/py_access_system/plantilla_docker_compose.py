@@ -19,7 +19,7 @@ services:
 
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
-      - db_data:/var/lib/mysql
+      - ./db_data:/var/lib/mysql
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD={cms_root_password}
@@ -33,7 +33,7 @@ services:
     container_name: wordpress_{cms_name}_{user_name}
     image: wordpress:latest
     volumes:
-      - cms_data:/var/www/html
+      - ./cms_data:/var/www/html
     ports:
       - {puerto_libre}:80
     restart: always
@@ -54,7 +54,7 @@ services:
     image: mariadb:10.6.4-focal
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
-      - db_data:/var/lib/mysql
+      - ./db_data:/var/lib/mysql
       - ./init_scripts:/docker-entrypoint-initdb.d  # Monta los scripts de inicialización
     restart: always
     environment:
@@ -70,7 +70,7 @@ services:
     container_name: drupal_{cms_name}_{user_name}
     image: drupal:latest
     volumes:
-      - cms_data:/var/www/html
+      - ./cms_data:/var/www/html
       - ./init_scripts:/docker-entrypoint-initdb.d  # Monta los scripts de inicialización
     ports:
       - {puerto_libre}:80
@@ -92,12 +92,12 @@ version: '3.1'
 services:
   joomladb:
     container_name: joomladb_{cms_name}_{user_name}
-    image: mysql:8.0
+    image: mysql:5.7
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD={cms_root_password}
     volumes:
-      - db_data:/var/lib/mysql
+      - ./db_data:/var/lib/mysql
   joomla:
     container_name: joomla_{cms_name}_{user_name}
     image: joomla
@@ -108,7 +108,7 @@ services:
       - JOOMLA_DB_HOST=joomladb
       - JOOMLA_DB_PASSWORD={cms_db_password}
     volumes:
-      - cms_data:/var/www/html
+      - ./cms_data:/var/www/html
 
 volumes:
   db_data:
@@ -125,7 +125,7 @@ services:
       - MYSQL_ROOT_PASSWORD={cms_root_password}
       - MYSQL_DATABASE={cms_name}
     volumes:
-      - db_data:/var/lib/mysql
+      - ./db_data:/var/lib/mysql
     networks:
       - prestashop_network
 
@@ -143,7 +143,7 @@ services:
       - DB_USER={cms_db_user}
       - DB_PASSWD={cms_db_password}
     volumes:
-      - cms_data:/var/www/html
+      - ./cms_data:/var/www/html
     networks:
       - prestashop_network
 

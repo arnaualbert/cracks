@@ -37,10 +37,10 @@ def create_docker_compose(cms_type, cms_name, cms_db_user, cms_db_password, cms_
         os.makedirs(file_path, exist_ok=True)
         print(f"Directorio(s) '{file_path}' creado(s) correctamente.")
         
-        volume_db_path = os.path.join(file_path, "db_data")
-        volume_cms_path = os.path.join(file_path, "cms_data")
-        os.makedirs(volume_db_path, exist_ok=True)
-        os.makedirs(volume_cms_path, exist_ok=True)
+        # volume_db_path = os.path.join(file_path, "db_data")
+        # volume_cms_path = os.path.join(file_path, "cms_data")
+        # os.makedirs(volume_db_path, exist_ok=True)
+        # os.makedirs(volume_cms_path, exist_ok=True)
     except Exception as e:
         print(f"Error al crear el directorio: {e}")
     
@@ -75,7 +75,7 @@ def create_cms(path_docker_compose,username, cms_type, cms_name, cms_db_user, cm
         os.chdir(os.path.dirname(path_docker_compose))
 
         # Ejecutar el comando docker-compose
-        command = f"""echo '{passw}' | sudo -S docker-compose up -d"""
+        command = f"""docker compose create"""
         subprocess.run(command, shell=True, check=True)
         print("Docker Compose levantado exitosamente.")
 
@@ -83,20 +83,20 @@ def create_cms(path_docker_compose,username, cms_type, cms_name, cms_db_user, cm
 
         puerto=get_puerto_libre()
         local_ip_address = get_local_ip_address()
+        state="created"
 
 
-
-        insert_service(username, cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password,local_ip_address, puerto)
+        insert_service(username, cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password,local_ip_address, puerto, state)
     except Exception as e:
         print(f"Error al levantar Docker Compose: {e}")
     
-def insert_service(username:str ,cms_type:str, cms_name:str, cms_db_user:str, cms_db_password:str, cms_root_password:str, ip:str, puerto:int):
+def insert_service(username:str ,cms_type:str, cms_name:str, cms_db_user:str, cms_db_password:str, cms_root_password:str, ip:str, puerto:int, state:str):
     print("ha llegado aquí")
     conn = get_connection()
     cur = conn.cursor()
     print("ha llegado aquí1")
-    cur.execute("INSERT INTO user_services (service_name, cms_type, cms_db_user, cms_db_password, cms_root_password, ip, puerto, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                (cms_name, cms_type, cms_db_user, cms_db_password, cms_root_password, ip, puerto, username))
+    cur.execute("INSERT INTO user_services (service_name, cms_type, cms_db_user, cms_db_password, cms_root_password, ip, puerto, state, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (cms_name, cms_type, cms_db_user, cms_db_password, cms_root_password, ip, puerto, state, username))
     conn.commit()
     conn.close()
     print("ha llegado aquí2")

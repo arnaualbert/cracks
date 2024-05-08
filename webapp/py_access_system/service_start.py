@@ -15,7 +15,7 @@ def start_service(service_name):
         os.chdir(os.path.dirname(f"""{path_docker_compose}/docker-compose.yml"""))
 
         # Ejecutar el comando docker-compose
-        command = f"""echo '{passw}' | sudo -S docker-compose start"""
+        command = f"""docker compose start"""
         subprocess.run(command, shell=True, check=True)
         print("Docker Compose lstarted successfully")
         
@@ -37,7 +37,7 @@ def stop_service(service_name):
         os.chdir(os.path.dirname(f"""{path_docker_compose}/docker-compose.yml"""))
 
         # Ejecutar el comando docker-compose
-        command = f"""echo '{passw}' | sudo -S docker-compose stop"""
+        command = f"""docker compose stop"""
         subprocess.run(command, shell=True, check=True)
         print("Docker Compose stoped successfully")
 

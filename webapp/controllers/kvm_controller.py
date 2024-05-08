@@ -11,11 +11,12 @@ kvm_module = Blueprint('kvm_module', __name__, template_folder='templates')
 
 @kvm_module.route("/kvm")
 def user_kvm():
+    username = session.get("username")
     if request.method == "GET" and check_is_logged():
         # return render_template("user_kvm.html")
         info_kvm=select_kvm()
         #info_kvm = [{"kvm_name":"test5","kvm_memory":"2048","kvm_cpu":"2","kvm_iso":"bionic"},{"kvm_name":"test5","kvm_memory":"2048","kvm_cpu":"2","kvm_iso":"bionic"},]
-        return render_template("user_kvm.html",info=info_kvm)
+        return render_template("user_kvm.html",info=info_kvm,username=username)
     else:
         return redirect("/login")
 
@@ -49,6 +50,7 @@ def get_session_data():
 
 @kvm_module.route("/kvm_create", methods=["GET", "POST"])
 def user_kvm_create():
+    username = session.get("username")
     if request.method == "GET" and check_is_logged():
             if session.get("all_kvm") is None:
                 all_vm_names = get_all_vm()
@@ -59,7 +61,7 @@ def user_kvm_create():
                 all_vm_names = get_all_vm()
                 session["all_kvm"] = all_vm_names
                 print(session.get("all_kvm"))
-            return render_template("user_kvm_create.html", all_vm_names=all_vm_names)
+            return render_template("user_kvm_create.html", all_vm_names=all_vm_names,username=username)
     if request.method == "POST" and check_is_logged():
         vm_name = request.form.get("vmName")
         vm_password = request.form.get("vmPassword")

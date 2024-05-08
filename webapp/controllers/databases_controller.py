@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, make_response
+from flask import Blueprint, request, render_template, redirect,session, make_response
 from controllers.login_controller import check_is_logged
 from py_access_system.database_create import create_database
 
@@ -8,15 +8,17 @@ databases_module = Blueprint('databases_module', __name__, template_folder='temp
 
 @databases_module.route("/database")
 def user_databases():
+    username = session.get("username")
     if request.method == "GET" and check_is_logged():
-        return render_template("user_databases.html")
+        return render_template("user_databases.html", username=username)
     else:
         return "please log in"
 
 @databases_module.route("/database_create")
 def user_database_create():
+    username = session.get("username")
     if request.method == "GET" and check_is_logged():
-        return render_template("user_database_create.html")
+        return render_template("user_database_create.html", username=username)
     else:
         return redirect("/login")
     

@@ -13,9 +13,10 @@ services_module = Blueprint('services_module', __name__, template_folder='templa
 
 @services_module.route("/services")
 def user_services():
+    username = session.get("username")
     if request.method == "GET" and check_is_logged():
         info_cms=select_services()
-        return render_template("user_services.html",info=info_cms)
+        return render_template("user_services.html",info=info_cms, username=username)
     else:
         return redirect("/login")
 
@@ -56,8 +57,9 @@ def select_services():
 
 @services_module.route("/service_create", methods=["GET", "POST"])
 def user_service_create():
+    username = session.get("username")
     if request.method == "GET" and check_is_logged():
-        return render_template("user_service_create.html")
+        return render_template("user_service_create.html", username=username)
     if request.method == "POST" and check_is_logged():
 
         cms_type = request.form.get("cmsType")
@@ -70,7 +72,7 @@ def user_service_create():
         
         username = session.get("username")
         create_cms(docker_compose_path, username,cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password)
-        stop_service(cms_name)
+        # stop_service(cms_name)
         return redirect("/services")
     else:
         return redirect("/login")
