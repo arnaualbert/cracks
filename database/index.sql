@@ -34,3 +34,17 @@ CREATE TABLE IF NOT EXISTS user_kvm (
     username VARCHAR(50),
     FOREIGN KEY (username) REFERENCES users(username)
 );
+
+
+CREATE TABLE IF NOT EXISTS user_databases (
+    database_name VARCHAR(100) PRIMARY KEY,
+    database_type VARCHAR(15),
+    db_user VARCHAR(20),
+    db_password VARCHAR(15),
+    root_password VARCHAR(15),
+    ip VARCHAR(15),
+    puerto INT(8),
+    state VARCHAR(10),
+    username VARCHAR(50),
+    FOREIGN KEY (username) REFERENCES users(username)
+);

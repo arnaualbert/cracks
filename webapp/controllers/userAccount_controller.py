@@ -5,6 +5,7 @@ from py_access_system.kvm_delete import delete_vm
 from controllers.login_controller import get_connection
 from py_access_system.kvm_start import start_vm, stop_vm, get_all_vm
 from py_access_system.kvm_get_ip_by_vm_name import get_ip_kvm
+import hashlib
 
 user_module = Blueprint('user_module', __name__, template_folder='templates')
 
@@ -26,7 +27,8 @@ def user_update():
         surname = request.form["surname"]
         email = request.form["email"]
         password = request.form["password"]
-        update_from_db(user_name,name,surname,email,password)
+        password_db = hashlib.sha256(password.encode("utf-8")).hexdigest()
+        update_from_db(user_name,name,surname,email,password_db)
         return redirect("/login")
     
 def update_from_db(username, name, surname, email, password):
@@ -56,7 +58,7 @@ def select_user():
             name=valor[1]
             surname=valor[2]
             email=valor[3]
-            password=valor[3]
+            password=valor[4]
             info_user.append({"user_name":user_name,"name":name,"surname":surname,"email":email, "password":password})
 
         conn.close()
