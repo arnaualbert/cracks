@@ -68,7 +68,7 @@ def create_cms(path_docker_compose,username, cms_type, cms_name, cms_db_user, cm
     original_directory = os.getcwd()
     try:
         # Obtenemos la contraseña del administrador
-        passw = own_env.getenv("PASSWORD_ROOT")
+        #passw = own_env.getenv("PASSWORD_ROOT")
 
 
         # Cambiar al directorio donde se encuentra el archivo Docker Compose

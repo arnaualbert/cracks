@@ -48,14 +48,15 @@ volumes:
 '''
     elif cms_type=="drupal":
         template = f'''
+version: "3.8"
+
 services:
   db:
     container_name: db_{cms_name}_{user_name}
     image: mariadb:10.6.4-focal
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
-      - ./db_data:/var/lib/mysql
-      - ./init_scripts:/docker-entrypoint-initdb.d  # Monta los scripts de inicialización
+      - db_data:/var/lib/mysql
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD={cms_root_password}
@@ -66,20 +67,19 @@ services:
       - 3306
       - 33060
 
-  drupal:
-    container_name: drupal_{cms_name}_{user_name}
+  wordpress:
+    container_name: wordpress_{cms_name}_{user_name}
     image: drupal:latest
     volumes:
-      - ./cms_data:/var/www/html
-      - ./init_scripts:/docker-entrypoint-initdb.d  # Monta los scripts de inicialización
+      - cms_data:/var/www/html
     ports:
       - {puerto_libre}:80
     restart: always
     environment:
-      - DRUPAL_DB_HOST=db
-      - DRUPAL_DB_USER={cms_db_user}
-      - DRUPAL_DB_PASSWORD={cms_db_password}
-      - DRUPAL_DB_NAME={cms_name}
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER={cms_db_user}
+      - WORDPRESS_DB_PASSWORD={cms_db_password}
+      - WORDPRESS_DB_NAME={cms_name}
 
 volumes:
   db_data:
