@@ -67,7 +67,7 @@
           <h2 class="mb-4">Create a CMS Service</h2>
           <form action="/service_create" method="post">
             <div class="mb-3">
-              <label for="cmsType" class="form-label">CMS Type:</label>
+              <label for="cmsType" class="form-label">CMS Type:<strong style="color: red;"> *</strong></label>
               <select class="form-select" id="cmsType" name="cmsType" required>
                 <option value="wordpress">WordPress</option>
                 <option value="drupal">Drupal</option>
@@ -77,19 +77,19 @@
               </select>
             </div>
             <div class="mb-3">
-              <label for="cmsNmae" class="form-label">CMS Name:</label>
+              <label for="cmsNmae" class="form-label">CMS Name:<strong style="color: red;"> *</strong></label>
               <input type="text" class="form-control" id="cmsNmae" name="cmsNmae" required>
             </div>
             <div class="mb-3">
-              <label for="cmsdbUser" class="form-label">Db User:</label>
+              <label for="cmsdbUser" class="form-label">Db User:<strong style="color: red;"> *</strong></label>
               <input type="text" class="form-control" id="cmsdbUser" name="cmsdbUser" required>
             </div>
             <div class="mb-3">
-              <label for="cmsdbPassword" class="form-label">CMS db Password:</label>
+              <label for="cmsdbPassword" class="form-label">CMS db Password:<strong style="color: red;"> *</strong></label>
               <input type="password" class="form-control" id="cmsdbPassword" name="cmsdbPassword" required>
             </div>
             <div class="mb-3">
-              <label for="cmsrootPassword" class="form-label">CMS root Password:</label>
+              <label for="cmsrootPassword" class="form-label">CMS root Password:<strong style="color: red;"> *</strong></label>
               <input type="password" class="form-control" id="cmsrootPassword" name="cmsrootPassword" required>
             </div>
             

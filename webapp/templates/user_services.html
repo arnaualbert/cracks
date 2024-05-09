@@ -78,13 +78,13 @@
                         
                         <div class="col-md-12 border border-light bg-warning-subtle">
                             <h5 class="card-title text-center"><strong>Service Name: <span style="color: red;">{{ service.service_name }}</span></strong></h5>
-                            <p class="card-text"><strong>Tipo de CMS:</strong> {{ service.cms_type }}</p>
-                            <p class="card-text"><strong>Usuario de la base de datos:</strong> {{ service.cms_db_user }}</p>
-                            <p class="card-text"><strong>Contraseña de la base de datos:</strong> {{ service.cms_db_password }}</p>
-                            <p class="card-text"><strong>Contraseña de root:</strong> {{ service.cms_root_password }}</p>
+                            <p class="card-text"><strong>CMS Type:</strong> {{ service.cms_type }}</p>
+                            <p class="card-text"><strong>Data Base User:</strong> {{ service.cms_db_user }}</p>
+                            <p class="card-text"><strong>Data Base Password:</strong> {{ service.cms_db_password }}</p>
+                            <p class="card-text"><strong>CMS Root Password:</strong> {{ service.cms_root_password }}</p>
                             <p class="card-text"><strong>IP:</strong> {{ service.ip }}</p>
-                            <p class="card-text"><strong>Puerto:</strong> {{ service.puerto }}</p>
-                            <p class="card-text"><strong>Estado:</strong> {{ service.state }}</p>
+                            <p class="card-text"><strong>Port:</strong> {{ service.puerto }}</p>
+                            <p class="card-text"><strong>State:</strong> {{ service.state }}</p>
                         </div>
 
                     </div>
@@ -108,14 +108,14 @@
 
                             {% if service.state == "started" %}
                             <a href="/stop_service/{{ service.service_name }}" class="btn btn-danger stop-service-btn">Detener</a>
-                            <a href="/delete_service/{{ service.service_name }}" class="btn btn-warning">Eliminar</a>
-                            
+                            <a href="/delete_service/{{ service.service_name }}" class="btn btn-warning">Eliminar</a>             
                             <!-- URL --> 
                             <h4>URL Access CMS: <a href="http://{{ service.ip }}:{{ service.puerto }}" target="_blank">http://{{ service.ip }}:{{ service.puerto }}</a></h4>   
                             
                             {% elif service.state == "stopped" or service.state == "created" %}
                                 <a href="/start_service/{{ service.service_name }}" class="btn btn-primary start-service-btn">Iniciar</a>
                                 <a href="/delete_service/{{ service.service_name }}" class="btn btn-warning">Eliminar</a>
+                                
                             {% endif %}
                         </div>
                     </div>
