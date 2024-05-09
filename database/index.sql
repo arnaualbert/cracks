@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS user_databases (
     root_password VARCHAR(15),
     ip VARCHAR(15),
     puerto INT(8),
-    state VARCHAR(10),
     username VARCHAR(50),
     FOREIGN KEY (username) REFERENCES users(username)
 );

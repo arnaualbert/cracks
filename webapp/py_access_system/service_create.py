@@ -108,6 +108,7 @@ def get_puerto_libre():
     # Consguimos los puertos ocupados en la tabla
     cur.execute("SELECT puerto FROM user_services")
     puertos_ocupados = [row[0] for row in cur.fetchall()]
+    conn.close()
 
     # Buscamos el puerto libre más bajo dentro del rango
     puerto_libre = None
@@ -116,6 +117,5 @@ def get_puerto_libre():
             puerto_libre = puerto
             break
 
-    conn.close()
 
     return puerto_libre

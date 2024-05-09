@@ -1,6 +1,6 @@
 import os
 import subprocess
-
+from controllers.login_controller import get_connection
 import pathlib
 
 def create_dict_env():
@@ -16,6 +16,15 @@ def getenv(key):
     dict_find = create_dict_env()
     return dict_find[key]
 
+
+def instert_into_databases_a_db(database_type,database_password,database_name,database_user,user):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO user_databases(database_name,database_type,db_user,db_password,root_password,ip,puerto,username) VALUES (?,?,?,?,?,?,?,?,?)",
+                    (database_name,database_type,database_password,database_name,database_user,user))
+    conn.commit()
+
+
 def create_database(database_type,database_password,database_name,database_user):
     if database_type == "mariadb" or database_type == "mysql":
         original_directory = os.getcwd()
@@ -25,8 +34,6 @@ def create_database(database_type,database_password,database_name,database_user)
         command = f"""echo '{passw}' | sudo -S docker compose up -d"""
         subprocess.run(command, shell=True, check=True) 
         os.chdir(original_directory)
-    # elif database_type == "postgress":
-    #     pass
 
 
 
