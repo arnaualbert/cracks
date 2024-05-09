@@ -56,80 +56,67 @@
 
   <br>
 
+{% if message_show %}
+<div class="alert alert-success" role="alert">
+    {{ message_show }}
+  </div>
+
+  {% endif %}
+
   <div class="h-100 d-flex align-items-center justify-content-center">
     <h1>Welcome, User <strong>{{username}}</strong>!</h1>
   </div>
 
   <div class="h-100 d-flex align-items-center justify-content-center">
-    <p style="color: red;">We are delighted to see you again. If you need to make changes to your account details, you can do so here.</p>
+    <p style="color: red;">We are here to help you in case of incidents. If you need to report a problem or incident, please do so here.</p>
   </div>
  
 <br>
 
-  <div class="container">
-    <h2>User Information</h2>
-    <table class="table">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">User Name</th>
-          <th scope="col">Name</th>
-          <th scope="col">Surname</th>
-          <th scope="col">email</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for user in info_user %}
-        <tr>
-          <td>{{ user.user_name }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.surname }}</td>
-          <td>{{ user.email }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+<form class="container" action="/put_incidents" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="username" class="form-label">User Name</label>
+        <input type="text" class="form-control" id="username" name="username" value="{{username }}" readonly>
+      </div>
 
-  <div class="container"> <button id="make-change-btn" class="btn btn-primary mt-3">Make Change</button> </div>
+    <div class="mb-3">
+      <label for="email">Email address <strong style="color: red;"> *</strong></label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+    </div>
 
+    <div class="mb-3">
+      <label for="type_incident">Select Type Incidents <strong style="color: red;"> *</strong></label>
+      <select class="form-control" id="type_incident" name="type_incident" required>
+        <option>Incidents without damage</option>
+        <option>Incidents with damage</option>
+        <option>Other</option>    
+        
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="touched_service">Which service<strong style="color: red;"> *</strong></label>
+      <select multiple class="form-control" id="touched_service" name="touched_service" required>
+        <option>KVM Service</option>
+        <option>CMS Service</option>
+        <option>Data Base Service</option>
+        <option>Storage Service</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="comment">incidet comment<strong style="color: red;"> *</strong></label>
+      <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="file"> Attached file </label>
+        <input type="file" class="form-control-file" id="file" name="file">
+      </div>
 <br>
-
-<div class="container" id="change-form" style="display: none;">
-  <form id="user-change-form" action="/user_update_datos" method="POST">
-    <div class="mb-3">
-      <label for="username" class="form-label">User Name</label>
-      <input type="text" class="form-control" id="username" name="username" value="{{ info_user[0].user_name }}" readonly>
-    </div>
-    
-    <div class="mb-3">
-      <label for="name" class="form-label">Name</label>
-      <input type="text" class="form-control" id="name" name="name" value="{{ info_user[0].name }}">
-    </div>
-    <div class="mb-3">
-      <label for="surname" class="form-label">SurName</label>
-      <input type="text" class="form-control" id="surname" name="surname" value="{{ info_user[0].surname }}">
-    </div>
-    <div class="mb-3">
-      <label for="email" class="form-label">email</label>
-      <input type="email" class="form-control" id="email" name="email" value="{{ info_user[0].email }}">
-    </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Password<strong style="color: red;"> *</strong></label>
-      <input type="password" class="form-control" id="password" name="password" required>
-    </div>
-   
-    <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
   </form>
-</div>
-
-<script>
-  // JavaScript para mostrar u ocultar el formulario al hacer clic en el botón
-  document.getElementById("make-change-btn").addEventListener("click", function() {
-    document.getElementById("change-form").style.display = "block";
-  });
-</script>
-
-
   
 </body>
 

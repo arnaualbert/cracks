@@ -6,6 +6,7 @@ from controllers.kvm_controller import kvm_module
 from controllers.services_controller import services_module
 from controllers.storage_controller import storage_module
 from controllers.userAccount_controller import user_module
+from controllers.contactUs_controller import contact_module
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -16,6 +17,7 @@ app.register_blueprint(kvm_module)
 app.register_blueprint(services_module)
 app.register_blueprint(storage_module)
 app.register_blueprint(user_module)
+app.register_blueprint(contact_module)
 
 @app.route("/",methods=["GET","POST"])
 def home_page():
