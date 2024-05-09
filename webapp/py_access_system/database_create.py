@@ -29,7 +29,9 @@ def create_database(database_type,database_password,database_name,database_user)
     if database_type == "mariadb" or database_type == "mysql":
         original_directory = os.getcwd()
         passw = getenv("PASSWORD_ROOT")
-        create_mdb_mysql(database_type,database_password,database_name,database_user)
+        puerto = get_puerto_libre()
+        create_mdb_mysql(database_type,database_password,database_name,database_user,puerto)
+        instert_into_databases_a_db()
         os.chdir(f"/home/arnau/Desktop/{database_name}")
         command = f"""echo '{passw}' | sudo -S docker compose up -d"""
         subprocess.run(command, shell=True, check=True) 
@@ -37,7 +39,7 @@ def create_database(database_type,database_password,database_name,database_user)
 
 
 
-def create_mdb_mysql(database_type,database_password,database_name,database_user):
+def create_mdb_mysql(database_type,database_password,database_name,database_user,puerto):
     compose = f"""services:
   {database_type}:
     image: {database_type}
@@ -48,19 +50,39 @@ def create_mdb_mysql(database_type,database_password,database_name,database_user
       MYSQL_USER: {database_user}
       MYSQL_PASSWORD: {database_password}
     ports:
-      - "3376:3306"
+      - "{puerto}:3306"
     volumes:
       - /home/arnau/Desktop/{database_name}/{database_name}:/var/lib/mysql
 """
 
     directory_path = f"/home/arnau/Desktop/{database_name}"
     if not os.path.exists(directory_path):
-        os.makedirs(directory_path)  # Create the directory if it doesn't exist
+        os.makedirs(directory_path)
 
     file_path = f"{directory_path}/docker-compose.yml"
     
     with open(file_path, "w") as file:
         file.write(compose)
+
+
+def get_puerto_libre():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # Consguimos los puertos ocupados en la tabla
+    cur.execute("SELECT puerto FROM user_databases")
+    puertos_ocupados = [row[0] for row in cur.fetchall()]
+    conn.close()
+
+    # Buscamos el puerto libre más bajo dentro del rango
+    puerto_libre = None
+    for puerto in range(3306, 4001):
+        if puerto not in puertos_ocupados:
+            puerto_libre = puerto
+            break
+
+
+    return puerto_libre
 
 
 

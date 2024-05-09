@@ -3,12 +3,31 @@ from controllers.login_controller import get_connection
 from flask import Flask, render_template, request, redirect, session
 import os
 import own_env
-
-
+import subprocess
 
 def create_config_vm(hostname, password):
-    config_word_list = ["#cloud-config",f"password: {password}", "chpasswd: { expire: False }", "ssh_pwauth: True", f"hostname: {hostname}"]
-    file_path = "/home/mohamed/Desktop/config-1.txt"    
+
+
+    # Run the mkpasswd command
+    output = subprocess.check_output(["mkpasswd", f"{password}","-m", "sha-512"])
+
+    # Decode the output to get the string representation
+    hashed_password = output.decode().strip()
+    username = hostname
+    users = f"""
+users:
+  - default
+  - name: {username}
+    passwd: "{hashed_password}"
+    shell: /bin/bash
+    lock-passwd: false
+    ssh_pwauth: True
+    chpasswd: "{{ expire: False }}"
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+"""
+    config_word_list = ["#cloud-config",f"password: {password}", "chpasswd: { expire: False }", "ssh_pwauth: True", f"hostname: {hostname}",users]
+    file_path = "/home/arnau/Desktop/config-1.txt"    
 
     if not os.path.exists(file_path):
         # If the file doesn't exist, create it
