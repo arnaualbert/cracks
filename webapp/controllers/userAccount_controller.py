@@ -1,10 +1,6 @@
-from flask import Blueprint, request, render_template, redirect, make_response, session, jsonify
+from flask import Blueprint, request, render_template, redirect, session
 from controllers.login_controller import check_is_logged
-from py_access_system.kvm_create import create_vm, create_config_vm
-from py_access_system.kvm_delete import delete_vm
 from controllers.login_controller import get_connection
-from py_access_system.kvm_start import start_vm, stop_vm, get_all_vm
-from py_access_system.kvm_get_ip_by_vm_name import get_ip_kvm
 import hashlib
 
 user_module = Blueprint('user_module', __name__, template_folder='templates')
