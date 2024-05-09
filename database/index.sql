@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS user_kvm (
     kvm_memory VARCHAR(10),
     kvm_cpus VARCHAR(10),
     kvm_iso VARCHAR(100),
+    kvm_username VARCHAR(50),
     username VARCHAR(50),
     FOREIGN KEY (username) REFERENCES users(username)
 );

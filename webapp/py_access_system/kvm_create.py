@@ -5,7 +5,7 @@ import os
 import own_env
 import subprocess
 
-def create_config_vm(hostname, password):
+def create_config_vm(hostname, password,username):
 
 
     # Run the mkpasswd command
@@ -13,7 +13,6 @@ def create_config_vm(hostname, password):
 
     # Decode the output to get the string representation
     hashed_password = output.decode().strip()
-    username = hostname
     users = f"""
 users:
   - default
@@ -43,7 +42,7 @@ users:
     subprocess.call(command,shell=True)
     return f"/var/lib/libvirt/{hostname}.img"
 
-def create_vm(kvm_name,kvm_memory,kvm_cpus,iso,img_disk_info):
+def create_vm(kvm_name,kvm_memory,kvm_cpus,iso,img_disk_info, kvm_username):
     passw = own_env.getenv("PASSWORD_ROOT")
     dict_iso_img = {"jammy":"jammy-server-cloudimg-amd64-disk-kvm.img","xenial":"xenial-server-cloudimg-amd64-disk1.img","mantic":"mantic-server-cloudimg-amd64.img","focal":"focal-server-cloudimg-amd64.img"}
     command_1 = f"""echo '{passw}' | sudo -S qemu-img convert -f qcow2 /var/lib/libvirt/images/{dict_iso_img[iso]} /var/lib/libvirt/images/{kvm_name}.img"""
@@ -54,12 +53,12 @@ def create_vm(kvm_name,kvm_memory,kvm_cpus,iso,img_disk_info):
             subprocess.call(command,shell=True)
         print(f"VM {kvm_name} created successfully.")
         username = session.get("username")
-        insert_kvm(kvm_name, kvm_memory, kvm_cpus, iso, username)
+        insert_kvm(kvm_name, kvm_memory, kvm_cpus, iso, username, kvm_username)
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
 
 
-def insert_kvm(kvm_name: str, kvm_memory: int, kvm_cpus: int, kvm_iso: str, username: str):
+def insert_kvm(kvm_name: str, kvm_memory: int, kvm_cpus: int, kvm_iso: str, username: str, kvm_username):
     """
     Inserta información de una máquina virtual en la base de datos.
 
@@ -75,8 +74,8 @@ def insert_kvm(kvm_name: str, kvm_memory: int, kvm_cpus: int, kvm_iso: str, user
     """
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("INSERT INTO user_kvm (kvm_name, kvm_memory, kvm_cpus, kvm_iso, username) VALUES (?, ?, ?, ?, ?)",
-                (kvm_name, kvm_memory, kvm_cpus, kvm_iso, username))
+    cur.execute("INSERT INTO user_kvm (kvm_name, kvm_memory, kvm_cpus, kvm_iso, kvm_username, username) VALUES (?, ?, ?, ?, ?, ?)",
+                (kvm_name, kvm_memory, kvm_cpus, kvm_iso, kvm_username, username))
     conn.commit()
     conn.close()
 
