@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from controllers.login_controller import check_is_logged
 from controllers.login_controller import login_module
 from controllers.databases_controller import databases_module
@@ -28,6 +28,7 @@ def home_page():
 @app.route("/home_user")
 def home_user():
     if request.method == "GET" and check_is_logged():
-        return render_template("home_user.html")
+        username_log = session.get("username")
+        return render_template("home_user.html",username=username_log)
     else:
         return redirect("/login")
