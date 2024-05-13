@@ -2,7 +2,7 @@ import subprocess
 import re
 import xml.etree.ElementTree as ET
 
-def get_br0_ip():# -> str|None:
+def get_br0_ip():
     """
     Obtiene la dirección IP y la máscara de subred de la interfaz de red 'br0'.
     Calcula la máscara de subred en formato CIDR y devuelve la dirección IP en ese formato,
@@ -22,7 +22,7 @@ def get_br0_ip():# -> str|None:
     else:
         return None
 
-def get_xml(vm_name: str):# -> str:
+def get_xml(vm_name):
     """
     Obtiene el XML que describe la configuración de la máquina virtual especificada.
     
@@ -35,7 +35,7 @@ def get_xml(vm_name: str):# -> str:
     output_xml = subprocess.check_output(["virsh", f"dumpxml --domain {vm_name}"])
     return output_xml.decode()
 
-def get_mac(vm_name: str):# -> str:
+def get_mac(vm_name):
     """
     Obtiene la dirección MAC de la interfaz de red de la máquina virtual especificada.
     
@@ -50,16 +50,26 @@ def get_mac(vm_name: str):# -> str:
     interface = et_parser.find(".//interface")
     mac_address = interface.find("mac").attrib["address"]
     return mac_address
-
 def do_nmap_analysis():
     """
     Realiza un escaneo de hosts en la red br0 utilizando el comando nmap con la opción -sP.
     La salida se redirige a /dev/null para que no se muestre en la consola.
     """
     ip_to_parse = get_br0_ip()
-    subprocess.run(["nmap","-sP",ip_to_parse],stdout = subprocess.DEVNULL)
+    if ip_to_parse is not None:
+        subprocess.run(["nmap", "-sP", ip_to_parse], stdout=subprocess.DEVNULL)
+    else:
+        print("No se pudo obtener la dirección IP de la interfaz br0.")
 
-def get_ip_kvm(vm_name: str):# -> str|None:
+# def do_nmap_analysis():
+#     """
+#     Realiza un escaneo de hosts en la red br0 utilizando el comando nmap con la opción -sP.
+#     La salida se redirige a /dev/null para que no se muestre en la consola.
+#     """
+#     ip_to_parse = get_br0_ip()
+#     subprocess.run(["nmap","-sP",ip_to_parse],stdout = subprocess.DEVNULL)
+
+def get_ip_kvm(vm_name):# -> str|None:
     """
     Obtiene la dirección IP de la máquina virtual especificada en la red.
     

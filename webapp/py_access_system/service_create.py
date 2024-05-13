@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, session
 import os
 import own_env
 from py_access_system.plantilla_docker_compose import create_docker_compose_template
-
+import re
 
 #comintario
 
@@ -13,22 +13,30 @@ def get_current_user():
     return os.getlogin()
 
 def get_local_ip_address():
-    try:
-        result = subprocess.run(['hostname', '-I'], capture_output=True, text=True)
-        ip_addresses = result.stdout.strip().split()
-        return ip_addresses[0] if ip_addresses else None
-    except Exception as e:
-        print(f"Error al obtener la dirección IP local: {e}")
+    ip_add = subprocess.check_output(["ifconfig","br0"])
+    ip_match = re.search(r'inet (\d+\.\d+\.\d+\.\d+)', ip_add.decode())
+    mask_match = re.search(r'mask (\d+\.\d+\.\d+\.\d+)', ip_add.decode())
+    if ip_match and mask_match:
+        ip = ip_match.group(1)
+        return ip
+    else:
         return None
+    # try:
+    #     result = subprocess.run(['hostname', '-I'], capture_output=True, text=True)
+    #     ip_addresses = result.stdout.strip().split()
+    #     return ip_addresses[0] if ip_addresses else None
+    # except Exception as e:
+    #     print(f"Error al obtener la dirección IP local: {e}")
+    #     return None
 
 
 def create_docker_compose(cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password):
     #ahora lo que vamos a hacer es crear un directrio de trabajo donde vamos a levantar el docker compose
     # # # cms_type="wordpress"
     # # # cms_name="benhammou"
-    # # # cms_db_user="arnau"
-    # # # cms_db_password="arnau"
-    # # # cms_root_password="arnau"
+    # # # cms_db_user="mohamed"
+    # # # cms_db_password="mohamed"
+    # # # cms_root_password="mohamed"
     username = session.get("username")
     puerto_libre = get_puerto_libre()
 
@@ -101,21 +109,32 @@ def insert_service(username:str ,cms_type:str, cms_name:str, cms_db_user:str, cm
     conn.close()
     print("ha llegado aquí2")
 
+# def get_puerto_libre():
+#     conn = get_connection()
+#     cur = conn.cursor()
+
+#     # Consguimos los puertos ocupados en la tabla
+#     cur.execute("SELECT puerto FROM user_services")
+#     puertos_ocupados = [row[0] for row in cur.fetchall()]
+#     conn.close()
+
+#     # Buscamos el puerto libre más bajo dentro del rango
+#     puerto_libre = None
+#     for puerto in range(8081, 9001):
+#         if puerto not in puertos_ocupados:
+#             puerto_libre = puerto
+#             break
+#     return puerto_libre
+
 def get_puerto_libre():
     conn = get_connection()
     cur = conn.cursor()
-
-    # Consguimos los puertos ocupados en la tabla
-    cur.execute("SELECT puerto FROM user_services")
-    puertos_ocupados = [row[0] for row in cur.fetchall()]
+    cur.execute("SELECT MAX(puerto) FROM user_services")
+    puerto_max= [row[0] for row in cur.fetchall()]
+    print(puerto_max)
     conn.close()
-
-    # Buscamos el puerto libre más bajo dentro del rango
-    puerto_libre = None
-    for puerto in range(8081, 9001):
-        if puerto not in puertos_ocupados:
-            puerto_libre = puerto
-            break
-
-
+    if puerto_max[0] is None or puerto_max[0] == "NULL":
+        puerto_libre=8090
+    else:
+        puerto_libre= puerto_max[0]+1
     return puerto_libre

@@ -92,7 +92,9 @@ def start_kvm(kvm_name):
     if request.method == "GET" and check_is_logged():
         print(kvm_name)
         start_vm(kvm_name)
+        print("hola")
         ip_kvm = get_ip_kvm(kvm_name)
+        print(ip_kvm)
         while ip_kvm == None:
             ip_kvm = get_ip_kvm(kvm_name)
             print(ip_kvm)
