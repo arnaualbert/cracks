@@ -105,18 +105,13 @@
 <br>
                     <div class="row">
                         <div class="col-md-12">
-
-                            {% if service.state == "started" %}
-                            <a href="/stop_service/{{ service.service_name }}" class="btn btn-danger stop-service-btn">Detener</a>
-                            <a href="/delete_service/{{ service.service_name }}" class="btn btn-warning">Eliminar</a>             
-                            <!-- URL --> 
-                            <h4>URL Access CMS: <a href="http://{{ service.ip }}:{{ service.puerto }}" target="_blank">http://{{ service.ip }}:{{ service.puerto }}</a></h4>   
-                            
-                            {% elif service.state == "stopped" or service.state == "created" %}
-                                <a href="/start_service/{{ service.service_name }}" class="btn btn-primary start-service-btn">Iniciar</a>
-                                <a href="/delete_service/{{ service.service_name }}" class="btn btn-warning">Eliminar</a>
-                                
-                            {% endif %}
+                          <div class="spinner-border load-service-{{ service.service_name }}" role="status" style="display: none;">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                          <a href="#" id="show_ip_h_{{ service.service_name }}"><p id="show_ip_{{ service.service_name }}"></p></a>  
+                          <a href="#" id="start-{{ service.service_name }}" data-service-name="{{ service.service_name }}" class="btn btn-primary start-service-btn">Iniciar</a>
+                          <a href="#" id="stop-{{ service.service_name }}" data-service-name="{{ service.service_name }}" class="btn btn-danger stop-service-btn" hidden>Detener</a>                            <!-- URL --> 
+                          <a href="/delete_service/{{ service.service_name }}" id="delete-service-{{ service.service_name }}" data-service-name="{{ service.service_name }}"  class="btn btn-warning">Eliminar</a>
                         </div>
                     </div>
                 </div>
@@ -134,8 +129,63 @@
     <a href="/service_create" class="btn btn-primary btn-lg">Create CMS</a>
   </div>
 
-
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(
+      function(){
+        $(".start-service-btn").click(function(){
+          var service_name = $(this).data('service-name');
+          var starBtn = $("#start-" + service_name);
+          var stopBtn = $("#stop-" + service_name);
+          var spinner = $(".load-service-" + service_name);
+          // var urlName = $("#url-"+ service_name)
+          spinner.css("display", "block");
+          starBtn.attr("hidden",true)
+          $.ajax({
+            url: '/start_service/' + service_name,
+            type: 'GET',
+            success: function(response){
+              stopBtn.removeAttr("hidden")
+              // urlName.removeAttr("hidden")
+              spinner.css("display", "none");
+              console.log("ASDsadsa")
+              $("#show_ip_" + service_name).text("IP: " + response.ip);
+              $("#show_ip_h_" + service_name).attr("href",response.ip);
+              $("#show_ip_h_" + service_name).attr("target","_blank");
+            },
+            error: function(xhr, status, error) {
+              console.log('/start_service/' + service_name)
+              console.error(xhr.responseText);
+            }
+          })
+        })
+        $(".stop-service-btn").click(function(){
+          var service_name = $(this).data('service-name');
+          var starBtn = $("#start-" + service_name);
+          var stopBtn = $("#stop-" + service_name);
+          var spinner = $(".load-service-" + service_name);
+          // var urlName = $("#url-"+ service_name)
+          spinner.css("display", "block");
+          stopBtn.attr("hidden",true)
+          
+          // urlName.attr("hidden",true)
+          $.ajax({
+            url: '/stop_service/' + service_name,
+            type: 'GET',
+            success: function(response){
+              spinner.css("display", "none");
+              starBtn.removeAttr("hidden")
+              // delete start and show stop
+            },
+            error: function(xhr, status, error) {
+              console.log('/start_service/' + service_name)
+              console.error(xhr.responseText);
+            }
+          })
+        })
+      }
+    )
+  </script>
 </body>
 
 </html>

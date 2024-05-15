@@ -61,45 +61,76 @@
   </div>
 
   <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="border p-5 d-flex flex-column align-items-center">
-          <h2 class="mb-4">Create a CMS Service</h2>
-          <form action="/service_create" method="post">
-            <div class="mb-3">
-              <label for="cmsType" class="form-label">CMS Type:<strong style="color: red;"> *</strong></label>
-              <select class="form-select" id="cmsType" name="cmsType" required>
-                <option value="wordpress">WordPress</option>
-                <option value="drupal">Drupal</option>
-                <option value="joomla">Joomla</option>          
-                <option value="prestashop">Prestashop</option>
-                <!-- Add other CMS options here -->
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="cmsNmae" class="form-label">CMS Name:<strong style="color: red;"> *</strong></label>
-              <input type="text" class="form-control" id="cmsNmae" name="cmsNmae" required>
-            </div>
-            <div class="mb-3">
-              <label for="cmsdbUser" class="form-label">Db User:<strong style="color: red;"> *</strong></label>
-              <input type="text" class="form-control" id="cmsdbUser" name="cmsdbUser" required>
-            </div>
-            <div class="mb-3">
-              <label for="cmsdbPassword" class="form-label">CMS db Password:<strong style="color: red;"> *</strong></label>
-              <input type="password" class="form-control" id="cmsdbPassword" name="cmsdbPassword" required>
-            </div>
-            <div class="mb-3">
-              <label for="cmsrootPassword" class="form-label">CMS root Password:<strong style="color: red;"> *</strong></label>
-              <input type="password" class="form-control" id="cmsrootPassword" name="cmsrootPassword" required>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Create CMS</button>
-          </form>
+    <div id="hide_form">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="border p-5 d-flex flex-column align-items-center">
+            <h2 class="mb-4">Create a CMS Service</h2>
+            <form action="/service_create" method="post">
+              <div class="mb-3">
+                <label for="cmsType" class="form-label">CMS Type:<strong style="color: red;"> *</strong></label>
+                <select class="form-select" id="cmsType" name="cmsType" required>
+                  <option value="wordpress">WordPress</option>
+                  <option value="drupal">Drupal</option>
+                  <option value="joomla">Joomla</option>          
+                  <option value="prestashop">Prestashop</option>
+                  <!-- Add other CMS options here -->
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="cmsNmae" class="form-label">CMS Name:<strong style="color: red;"> *</strong></label>
+                <input type="text" class="form-control" id="cmsNmae" name="cmsNmae" required>
+              </div>
+              <div class="mb-3">
+                <label for="cmsdbUser" class="form-label">Db User:<strong style="color: red;"> *</strong></label>
+                <input type="text" class="form-control" id="cmsdbUser" name="cmsdbUser" required>
+              </div>
+              <div class="mb-3">
+                <label for="cmsdbPassword" class="form-label">CMS db Password:<strong style="color: red;"> *</strong></label>
+                <input type="password" class="form-control" id="cmsdbPassword" name="cmsdbPassword" required>
+              </div>
+              <div class="mb-3">
+                <label for="cmsrootPassword" class="form-label">CMS root Password:<strong style="color: red;"> *</strong></label>
+                <input type="password" class="form-control" id="cmsrootPassword" name="cmsrootPassword" required>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-load-send-form">Create CMS</button>
+            </form>
+          </div>
         </div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="spinner-border load-spin" role="status" style="display: none;">
+        <span class="sr-only">Loading...</span>
       </div>
     </div>
   </div>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(
+      function (){
+        // /service_create
+        $(".btn-load-send-form").click(function(){
+          var hide_part = $("#hide_form")
+          var show_part = $("#show_form")
+          hide_part.attr("hidden",true)
+          var spinner = $(".load-spin");
+          spinner.css("display", "block");
+          console.log("ASDAS")
+          $.ajax({
+            url: '/service_create',
+            type: 'GET',
+            success: function(response){
+              console.log("padsasdut")
+            }
+          })
+        })
+
+      }
+    )
+  </script>
 </body>
 
 </html>

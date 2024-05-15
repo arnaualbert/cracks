@@ -17,22 +17,22 @@ def getenv(key):
     return dict_find[key]
 
 
-def instert_into_databases_a_db(database_type,database_password,database_name,database_user,user):
+def instert_into_databases_a_db(database_type,database_password,database_name,database_user,puerto, user):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO user_databases(database_name,database_type,db_user,db_password,root_password,ip,puerto,username) VALUES (?,?,?,?,?,?,?,?,?)",
-                    (database_name,database_type,database_password,database_name,database_user,user))
+    cursor.execute("INSERT INTO user_databases(database_name,database_type,db_user,db_password,root_password,ip,puerto,username) VALUES (?,?,?,?,?,?,?,?)",
+                    (database_name,database_type,database_user,database_password,database_password,"192.168.127.200",puerto,user))
     conn.commit()
 
 
-def create_database(database_type,database_password,database_name,database_user):
+def create_database(database_type,database_password,database_name,database_user,current_user):
     if database_type == "mariadb" or database_type == "mysql":
         original_directory = os.getcwd()
         passw = getenv("PASSWORD_ROOT")
         puerto = get_puerto_libre()
         create_mdb_mysql(database_type,database_password,database_name,database_user,puerto)
-        instert_into_databases_a_db()
-        os.chdir(f"/home/mohamed/Desktop/{database_name}")
+        instert_into_databases_a_db(database_type,database_password,database_name,database_user,puerto, current_user)
+        os.chdir(f"/home/arnau/Desktop/{database_name}")
         command = f"""echo '{passw}' | sudo -S docker compose up -d"""
         subprocess.run(command, shell=True, check=True) 
         os.chdir(original_directory)
@@ -52,10 +52,10 @@ def create_mdb_mysql(database_type,database_password,database_name,database_user
     ports:
       - "{puerto}:3306"
     volumes:
-      - /home/mohamed/Desktop/{database_name}/{database_name}:/var/lib/mysql
+      - /home/arnau/Desktop/{database_name}/{database_name}:/var/lib/mysql
 """
 
-    directory_path = f"/home/mohamed/Desktop/{database_name}"
+    directory_path = f"/home/arnau/Desktop/{database_name}"
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
 
@@ -84,7 +84,14 @@ def get_puerto_libre():
 
     return puerto_libre
 
-
+def get_databases(user):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM user_databases WHERE username = ?",
+                    (user,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
 
 # create_database("mariadb","a1223","arnsau","mohamsed")
 
@@ -102,6 +109,6 @@ def get_puerto_libre():
 #     ports:
 #       - "5472:5432"
 #     volumes:
-#       - /home/mohamed/Desktop/{database_name}/{database_name}:/var/lib/postgresql/data
+#       - /home/arnau/Desktop/{database_name}/{database_name}:/var/lib/postgresql/data
 # """
 #     pass

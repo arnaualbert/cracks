@@ -20,6 +20,16 @@ def user_services():
     else:
         return redirect("/login")
 
+
+def url_service(cms_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT ip, puerto FROM user_services WHERE service_name = ?", (cms_name,))
+    rows = cursor.fetchall()
+    if rows:
+        for val in rows:
+            return f"http://{val[0]}:{val[1]}"
+
 def select_services():
     info_services=[]
     username = session.get("username")
@@ -83,7 +93,9 @@ def user_service_create():
 def start_services(cms_name):
     if request.method == "GET" and check_is_logged():
         start_service(cms_name)
-        return redirect("/services")  
+        full_ip = url_service(cms_name)
+        print(full_ip)
+        return {"ip":full_ip}
     else:
         return redirect("/login")
 
@@ -92,7 +104,8 @@ def start_services(cms_name):
 def stop_services(cms_name):
     if request.method == "GET" and check_is_logged():
         stop_service(cms_name)
-        return redirect("/services")
+        # return redirect("/services")
+        return {"status":"done"}
     else:
         return redirect("/login")
 
