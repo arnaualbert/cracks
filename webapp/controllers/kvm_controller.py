@@ -28,12 +28,16 @@ def select_kvm():
     cursor.execute("SELECT * FROM user_kvm WHERE username = ?",(username,))
     rows = cursor.fetchall()
     if rows:
+        print("row")
+        print(rows)
+        print("pep")
         for valor in rows:
             kvm_name=valor[0]
             kvm_memory=valor[1]
             kvm_cpu=valor[2]
             kvm_iso=valor[3]
-            info_kvm.append({"kvm_name":kvm_name,"kvm_memory":kvm_memory,"kvm_cpu":kvm_cpu,"kvm_iso":kvm_iso})
+            kvm_username=valor[4]
+            info_kvm.append({"kvm_name":kvm_name,"kvm_memory":kvm_memory,"kvm_cpu":kvm_cpu,"kvm_iso":kvm_iso,"kvm_username":kvm_username})
 
         conn.close()
         return info_kvm

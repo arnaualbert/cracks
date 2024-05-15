@@ -74,7 +74,6 @@
                   <option value="drupal">Drupal</option>
                   <option value="joomla">Joomla</option>          
                   <option value="prestashop">Prestashop</option>
-                  <!-- Add other CMS options here -->
                 </select>
               </div>
               <div class="mb-3">
@@ -121,7 +120,7 @@
           console.log("ASDAS")
           $.ajax({
             url: '/service_create',
-            type: 'GET',
+            type: 'POST',
             success: function(response){
               console.log("padsasdut")
             }

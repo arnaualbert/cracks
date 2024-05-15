@@ -77,7 +77,7 @@
             </div>
             <p id="show_ip_{{ kvm.kvm_name }}"></p>
             <p id="show_login_{{ kvm.kvm_name }}"></p>
-            <p class="card-text">Especificaciones: {{ kvm.kvm_memory }}mb, {{ kvm.kvm_cpu }} CPU's.</p>
+            <p class="card-text">Especificaciones: {{ kvm.kvm_memory }}mb, {{ kvm.kvm_cpu }} CPU's, Ubuntu: {{ kvm.kvm_iso }}</p>
               <a href="#" class="btn btn-primary start-kvm-btn" id="start-{{ kvm.kvm_name }}" data-kvm-name="{{ kvm.kvm_name }}">Start</a>
               <a href="#" class="btn btn-danger stop-kvm-btn" id="stop-{{ kvm.kvm_name }}" data-kvm-name="{{ kvm.kvm_name }}" hidden>Stop</a>
               <a href="/kvm_delete/{{kvm.kvm_name}}" class="btn btn-warning">Eliminar</a>
