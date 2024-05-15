@@ -67,23 +67,23 @@
                 <h2 class="mb-4">Create a Virtual Machine</h2>
                 <form action="/kvm_create" method="post">
                     <div class="mb-3">
-                        <label for="vmName" class="form-label">Virtual Machine Name:</label>
+                        <label for="vmName" class="form-label">Virtual Machine Name:<strong style="color: red;"> *</strong></label>
                         <input type="text" class="form-control" id="vmName" name="vmName" required>
                     </div>
                     <div class="mb-3">
-                      <label for="vmName" class="form-label">Hostname:</label>
+                      <label for="vmName" class="form-label">Hostname:<strong style="color: red;"> *</strong></label>
                       <input type="text" class="form-control" id="vmHostname" name="vmHostname" required>
                   </div>
                   <div class="mb-3">
-                    <label for="vmName" class="form-label">Username:</label>
+                    <label for="vmName" class="form-label">Username:<strong style="color: red;"> *</strong></label>
                     <input type="text" class="form-control" id="vmUsername" name="vmUsername" required>
                   </div>
                     <div class="mb3">
-                      <label for="password_user" class="form-label">Password VM:</label>
+                      <label for="password_user" class="form-label">Password VM:<strong style="color: red;"> *</strong></label>
                       <input type="password" class="form-control" id="vmPassword" name="vmPassword" required>
                     </div>
                     <div class="mb-3">
-                        <label for="ram" class="form-label">Memory (RAM):</label>
+                        <label for="ram" class="form-label">Memory (RAM):<strong style="color: red;"> *</strong></label>
                         <select class="form-select" id="ram" name="ram" required>
                             <option value="1024">1 GB</option>
                             <option value="2048">2 GB</option>
@@ -92,7 +92,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="cpus" class="form-label">Number of CPUs:</label>
+                        <label for="cpus" class="form-label">Number of CPUs:<strong style="color: red;"> *</strong></label>
                         <select class="form-select" id="cpus" name="cpus" required>
                             <option value="1">1 CPU</option>
                             <option value="2">2 CPUs</option>
@@ -101,7 +101,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="iso" class="form-label">ISO Image:</label>
+                        <label for="iso" class="form-label">ISO Image:<strong style="color: red;"> *</strong></label>
                         <select class="form-select" id="iso" name="iso" required>
                             <option value="jammy">jammy 22.04</option>
                             <option value="xenial">xenial 16.04</option>
