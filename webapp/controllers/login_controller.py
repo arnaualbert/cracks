@@ -1,8 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, make_response, session
 import mariadb
-import own_env
+import os
 import hashlib
-
 
 login_module = Blueprint('login_module', __name__, template_folder='templates')
 
@@ -13,13 +12,25 @@ def check_is_logged():
         return False
 
 
+# def get_connection():
+#     conn = mariadb.connect(
+#         user = os.getenv("USERDB"),
+#         password= os.getenv("PASSWORD"),
+#         host="localhost",
+#         port=3306,
+#         database=os.getenv("DATABASE")
+#     )
+#     return conn
+
+
+
 def get_connection():
     conn = mariadb.connect(
-        user = own_env.getenv("USERDB"),
-        password= own_env.getenv("PASSWORD"),
+        user = os.getenv("USERDB"),
+        password= os.getenv("PASSWORD"),
         host="localhost",
         port=3306,
-        database=own_env.getenv("DATABASE")
+        database=os.getenv("DATABASE")
     )
     return conn
 

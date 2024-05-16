@@ -2,6 +2,7 @@ import pathlib
 
 def create_dict_env():
     file_env = pathlib.Path(".env").read_text().split()
+    print(file_env)
     dict_env = {}
     for kv in file_env:
         list_kv = kv.split("=")

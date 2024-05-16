@@ -61,6 +61,7 @@
   </div>
 
   <div class="container mt-5">
+    <div id="hide_form">
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="border p-5 d-flex flex-column align-items-center">
@@ -85,13 +86,38 @@
               <label for="dbAdminPassword" class="form-label">Admin Password:</label>
               <input type="password" class="form-control" id="dbAdminPassword" name="dbAdminPassword" required>
             </div>
-            <button type="submit" class="btn btn-primary">Create Database</button>
+            <button type="submit" class="btn btn-primary btn-load-send-form">Create Database</button>
           </form>
         </div>
       </div>
     </div>
   </div>
-
+    <div class="row justify-content-center">
+      <div class="spinner-border load-spin" role="status" style="display: none;">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $(".btn-load-send-form").click(function(){
+              var hide_part = $("#hide_form")
+              var show_part = $("#show_form")
+              hide_part.attr("hidden",true)
+              var spinner = $(".load-spin");
+              spinner.css("display", "block");
+              console.log("ASDAS")
+              $.ajax({
+                url: '/create_database',
+                type: 'POST',
+                success: function(response){
+                  console.log("padsasdut")
+                }
+              })
+            })
+    })
+  </script>
 </body>
 
 </html>

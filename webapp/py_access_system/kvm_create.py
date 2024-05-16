@@ -2,7 +2,7 @@ import subprocess
 from controllers.login_controller import get_connection
 from flask import Flask, render_template, request, redirect, session
 import os
-import own_env
+import os
 import subprocess
 
 def create_config_vm(hostname, password,username):
@@ -37,13 +37,13 @@ users:
         for word in config_word_list:
             file.write(word + "\n")
 
-    passw = own_env.getenv("PASSWORD_ROOT")
+    passw = os.getenv("PASSWORD_ROOT")
     command = f"""echo '{passw}' | sudo -S cloud-localds /var/lib/libvirt/{hostname}.img {file_path}"""
     subprocess.call(command,shell=True)
     return f"/var/lib/libvirt/{hostname}.img"
 
 def create_vm(kvm_name,kvm_memory,kvm_cpus,iso,img_disk_info, kvm_username):
-    passw = own_env.getenv("PASSWORD_ROOT")
+    passw = os.getenv("PASSWORD_ROOT")
     dict_iso_img = {"jammy":"jammy-server-cloudimg-amd64-disk-kvm.img","xenial":"xenial-server-cloudimg-amd64-disk1.img","mantic":"mantic-server-cloudimg-amd64.img","focal":"focal-server-cloudimg-amd64.img"}
     command_1 = f"""echo '{passw}' | sudo -S qemu-img convert -f qcow2 /var/lib/libvirt/images/{dict_iso_img[iso]} /var/lib/libvirt/images/{kvm_name}.img"""
     command_2 = f"""echo '{passw}' | sudo -S  virt-install  --name {kvm_name}  --memory {kvm_memory} --disk /var/lib/libvirt/images/{kvm_name}.img,device=disk,bus=virtio  --disk {img_disk_info},device=cdrom --os-variant ubuntu16.04  --virt-type kvm  --graphics none  --network network=hostbridge,model=virtio  --import"""

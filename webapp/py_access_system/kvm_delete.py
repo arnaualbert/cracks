@@ -1,7 +1,7 @@
 import subprocess
 from controllers.login_controller import get_connection
 from flask import Flask, render_template, request, redirect, session
-import own_env
+import os
 
 def delete_vm(kvm_name: str):
     """
@@ -14,7 +14,7 @@ def delete_vm(kvm_name: str):
         None
     """
     try:
-        passw = own_env.getenv("PASSWORD_ROOT")
+        passw = os.getenv("PASSWORD_ROOT")
         command_perms = f"echo '{passw}' | sudo -S chmod 777 /var/lib/libvirt/images/{kvm_name}*"
         command_destroy = f"""virsh destroy {kvm_name}"""
         command_undfine = f"""virsh undefine {kvm_name}"""

@@ -1,7 +1,7 @@
 import subprocess
 from controllers.login_controller import get_connection
 import os
-import own_env
+import os
 
 
 

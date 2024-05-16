@@ -75,12 +75,12 @@
             <img class="card-img-top" src="../static/static/productos-open-source-neodoo-persistencia-mariadb.jpg" height="145px" width="350px" alt="mariadb">
             {% endif %}
             <h5 class="card-title">Name: {{ database[0] }}</h5>
-            <p>db Type: {{database[1]}}
+            <p>db Type: {{database[1]}}</p>
             <p>IP: {{database[5]}}</p>
             <p>Port: {{database[6]}}</p>
             <p>db User: {{database[2]}}</p>
             <p>db Pass: {{database[4]}}</p>
-            </p>
+            <a href="/delete_database/{{ database[0] }}" class="btn btn-warning">Delete</a>
           </div>
         </div>
       </div>
@@ -94,6 +94,7 @@
   <div class="position-fixed bottom-0 end-0 m-4">
     <a href="/database_create" class="btn btn-primary btn-lg">Create DataBase</a>
   </div>
+
 
 </body>
 

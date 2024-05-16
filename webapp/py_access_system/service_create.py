@@ -2,7 +2,7 @@ import subprocess
 from controllers.login_controller import get_connection
 from flask import Flask, render_template, request, redirect, session
 import os
-import own_env
+import os
 from py_access_system.plantilla_docker_compose import create_docker_compose_template
 import re
 
@@ -76,7 +76,7 @@ def create_cms(path_docker_compose,username, cms_type, cms_name, cms_db_user, cm
     original_directory = os.getcwd()
     try:
         # Obtenemos la contraseña del administrador
-        #passw = own_env.getenv("PASSWORD_ROOT")
+        #passw = os.getenv("PASSWORD_ROOT")
 
 
         # Cambiar al directorio donde se encuentra el archivo Docker Compose

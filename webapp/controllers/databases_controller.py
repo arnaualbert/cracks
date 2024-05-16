@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, redirect,session, make_response
 from controllers.login_controller import check_is_logged
-from py_access_system.database_create import create_database, get_databases
+from py_access_system.database_create import create_database, get_databases, database_delete
 
 databases_module = Blueprint('databases_module', __name__, template_folder='templates')
 
@@ -33,6 +33,15 @@ def user_create_database():
         database_password = request.form["dbAdminPassword"]
         current_user = session.get("username")
         create_database(database_type,database_password,database_name,database_user,current_user)
+        return redirect("/database")
+    else:
+        return redirect("/login")
+
+
+@databases_module.route("/delete_database/<database_name>",methods=["GET","POST"])
+def delete_db_docker(database_name):
+    if request.method == "GET" and check_is_logged():
+        database_delete(database_name)
         return redirect("/database")
     else:
         return redirect("/login")
