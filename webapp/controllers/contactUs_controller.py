@@ -51,7 +51,7 @@ def save_data(username, email, type_incident, touched_service, comment, file):
     current_user = get_current_user()
     print(file)
     date = get_current_datetime()
-    directory = f"/home/arnau/Desktop/cracks/incident"
+    directory = f"/home/mohamed/Desktop/cracks/incident"
 
     if not os.path.exists(directory):
         os.makedirs(directory)

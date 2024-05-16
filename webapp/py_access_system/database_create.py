@@ -18,7 +18,7 @@ def create_database(database_type,database_password,database_name,database_user,
         puerto = get_puerto_libre()
         create_mdb_mysql(database_type,database_password,database_name,database_user,puerto)
         instert_into_databases_a_db(database_type,database_password,database_name,database_user,puerto, current_user)
-        os.chdir(f"/home/arnau/Desktop/{database_name}")
+        os.chdir(f"/home/mohamed/Desktop/{database_name}")
         command = f"""docker compose up -d"""
         subprocess.run(command, shell=True, check=True) 
         os.chdir(original_directory)
@@ -38,10 +38,10 @@ def create_mdb_mysql(database_type,database_password,database_name,database_user
     ports:
       - "{puerto}:3306"
     volumes:
-      - /home/arnau/Desktop/{database_name}:/var/lib/mysql
+      - /home/mohamed/Desktop/{database_name}:/var/lib/mysql
 """
 
-    directory_path = f"/home/arnau/Desktop/{database_name}"
+    directory_path = f"/home/mohamed/Desktop/{database_name}"
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
 
@@ -140,6 +140,6 @@ def delete_from_db_db(database_name: str):
 #     ports:
 #       - "5472:5432"
 #     volumes:
-#       - /home/arnau/Desktop/{database_name}/{database_name}:/var/lib/postgresql/data
+#       - /home/mohamed/Desktop/{database_name}/{database_name}:/var/lib/postgresql/data
 # """
 #     pass
