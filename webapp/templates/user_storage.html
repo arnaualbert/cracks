@@ -59,9 +59,6 @@
   <div class="h-100 d-flex align-items-center justify-content-center">
     <h1>Welcome to the Storage service</h1>
   </div>
-
-
-
   <div class="container border border-warning">
     <div class="row">
       <div class="col col-lg-2 mb-3 p-3 mb-2 bg-warning text-dark">
@@ -88,8 +85,6 @@
         </div>
         <br>
         <br>
-        <div><i class="fa-solid fa-trash"></i></i>  Trash</div>
-        <div><i class="fa-solid fa-cloud"></i> Storage</div>
       </div>
       
       <div class="col border border-info mb-3 p-3 ">
@@ -109,12 +104,6 @@
                                 </label>
                                 <input type="file" id="uploadFileInput" style="display:none;" />
                       </li>
-                      <li>
-                                <label for="uploadFolderInput" class="dropdown-item">
-                                    <i class="fa-regular fa-folder-open"></i> Upload folder
-                                </label>
-                                <input type="file" id="uploadFolderInput" style="display:none;" webkitdirectory multiple />
-                      </li>
                 </ul>
               </div>
             </div>
@@ -125,58 +114,21 @@
             <div class="col">
               
               <div class="folder-group">
+
+                {% for directory, contents in paths.items() %}
+                {% for item in contents %}
                   <div class="folder">
-                      <i class="fa-solid fa-folder"></i> directorio1
+                    <i class="fa-solid fa-file"></i> {{ item.split('/')[-1] }}
                       <button class="btn btn-lg btn-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="fa-solid fa-bars"></i>
                       </button>
                       <ul class="dropdown-menu folder-menu" aria-labelledby="dropdownMenuButton1">
-                          <li><a class="dropdown-item" href="#"><i class="fa-solid fa-download"></i> Download</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa-solid fa-trash-can"></i> Move to trash</a></li>
+                        <li><a class="dropdown-item" href="/download_file/{{ item.split('/')[-1] }}"><i class="fa-solid fa-download"></i> Download</a></li>
+                          <li><a class="dropdown-item" href="/delete_file/{{ item.split('/')[-1] }}"><i class="fa-solid fa-trash-can"></i> Move to trash</a></li>
                       </ul>
                   </div>
-                  
-                  <div class="folder">
-                      <i class="fa-solid fa-folder"></i>directorio2
-                      <button class="btn btn-lg btn-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="fa-solid fa-bars"></i>
-                      </button>
-                      <ul class="dropdown-menu folder-menu">
-                          <li><a class="dropdown-item" href="#"><i class="fa-solid fa-download"></i> Download</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa-solid fa-trash-can"></i> Move to trash</a></li>
-                      </ul>
-                  </div>
-                  <div class="folder">
-                      <i class="fa-solid fa-folder"></i>directorio3
-                      <button class="btn btn-lg btn-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="fa-solid fa-bars"></i>
-                      </button>
-                      <ul class="dropdown-menu folder-menu">
-                          <li><a class="dropdown-item" href="#"><i class="fa-solid fa-download"></i> Download</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa-solid fa-trash-can"></i> Move to trash</a></li>
-                      </ul>
-                  </div>
-                  <div class="folder">
-                      <i class="fa-solid fa-folder"></i>directorio4
-                      <button class="btn btn-lg btn-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="fa-solid fa-bars"></i>
-                      </button>
-                      <ul class="dropdown-menu folder-menu">
-                          <li><a class="dropdown-item" href="#"><i class="fa-solid fa-download"></i> Download</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa-solid fa-trash-can"></i> Move to trash</a></li>
-                      </ul>
-                  </div>
-                  <div class="folder">
-                      <i class="fa-solid fa-folder"></i>directorio5
-                      <button class="btn btn-lg btn-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="fa-solid fa-bars"></i>
-                      </button>
-                      <ul class="dropdown-menu folder-menu">
-                          <li><a class="dropdown-item" href="#"><i class="fa-solid fa-download"></i> Download</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa-solid fa-trash-can"></i> Move to trash</a></li>
-                      </ul>
-                  </div>
-                  
+                  {% endfor %}
+                  {% endfor %}
               </div>
           </div>
           
@@ -188,42 +140,6 @@
     </div>
   </div>
 
-
-  <script>
-    document.getElementById("newFolderForm").addEventListener("submit", function (event) {
-      event.preventDefault();
-      // Here you can process the form submission, e.g., send an AJAX request to create the new folder on the server
-      // Once done, you can close the modal if necessary
-      var folderName = document.getElementById("folderName").value;
-      console.log("New folder name:", folderName);
-      // Close the modal
-      var modal = new bootstrap.Modal(document.getElementById('newFolderModal'));
-      modal.hide();
-    });
-  </script>
-
-    <div class="modal fade" id="newFolderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">New Folder</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <form id="newFolderForm" action="/new_folder" method="POST">
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="folderName" class="form-label">Folder Name:</label>
-                    <input type="text" class="form-control" id="folderName" name="folderName">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Create</button>
-            </div>
-        </form>
-        </div>
-      </div>
-    </div>
 
 
 </body>
