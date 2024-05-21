@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect,session, make_response,send_file, abort
+from flask import Blueprint, request, render_template, redirect,session, make_response,send_file, jsonify, abort
 from controllers.login_controller import check_is_logged
 from py_access_system.storage_UpDown import crear_user_espacio, crear_carpeta, get_all_from_user
 import os
@@ -22,7 +22,8 @@ def user_storage():
 @storage_module.route('/download_file/<path:filename>')
 def download_file(filename):
     try:
-        base_dir = f"/home/arnau/users_storage/pepe"
+        username = session.get("username")
+        base_dir = f"/home/arnau/users_storage/{username}"
         # Safely join the base directory and the requested file
         file_path = os.path.join(base_dir, filename)
         
@@ -38,7 +39,8 @@ def download_file(filename):
 @storage_module.route('/delete_file/<path:filename>')
 def delete_file(filename):
     try:
-        base_dir = f"/home/arnau/users_storage/pepe"
+        username = session.get("username")
+        base_dir = f"/home/arnau/users_storage/{username}"
         # Safely join the base directory and the requested file
         file_path = os.path.join(base_dir, filename)
         
@@ -77,9 +79,20 @@ def user_upload_folder():
     else:
         return redirect("/login")
     
-@storage_module.route("/upload_file")
+@storage_module.route("/upload_file", methods=["POST"])
 def user_upload_file():
     if request.method == "GET" and check_is_logged():
+        
         return render_template("user_storage_create.html")
+    if request.method == "POST" and check_is_logged():
+        if 'files' not in request.files:
+            return jsonify({'success': False}), 400
+
+        files = request.files.getlist('files')
+        for file in files:
+            username = session.get("username")
+            # Save file logic here /home/arnau/users_storage/arnau
+            file.save(f"/home/arnau/users_storage/{username}/{file.filename}")
+            return jsonify({"success":True})
     else:
         return redirect("/login")
