@@ -91,6 +91,27 @@ def user_kvm_delete(kvm_name):
         return redirect("/login")
     
 
+def get_user_kvm(kvm_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT kvm_username FROM user_kvm WHERE kvm_name = ?",(kvm_name,))
+    rows = cursor.fetchall()
+    if rows:
+        print("row")
+        print(rows)
+        print("pep")
+        for valor in rows:
+            print("valor")
+            print(valor)
+            print("valor")
+            user_kvm_from_kvm=valor[0]
+
+        conn.close()
+        return user_kvm_from_kvm
+    else:
+        conn.close()
+        return "None"
+
 @kvm_module.route("/start_kvm/<kvm_name>",methods=["GET","POST"])
 def start_kvm(kvm_name):
     if request.method == "GET" and check_is_logged():
@@ -102,7 +123,9 @@ def start_kvm(kvm_name):
         while ip_kvm == None:
             ip_kvm = get_ip_kvm(kvm_name)
             print(ip_kvm)
-        return {"ip":ip_kvm}
+        user = get_user_kvm(kvm_name)
+        print(user)
+        return {"ip":ip_kvm, "user":user}
     
 @kvm_module.route("/stop_kvm/<kvm_name>",methods=["GET"])
 def stop_kvm(kvm_name):

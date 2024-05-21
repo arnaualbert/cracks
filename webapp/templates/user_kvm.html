@@ -109,10 +109,12 @@
         url: '/start_kvm/' + kvmName,
         type: 'GET',
         success: function(response) {
+          console.log(response)
           console.log('IP Address:', response.ip);
           spinner.css("display", "none");
+          console.log(response.user)
           $("#show_ip_" + kvmName).text("IP: " + response.ip);
-          $("#show_login_" + kvmName).text("Login: ssh ubuntu@" + response.ip);
+          $("#show_login_" + kvmName).text("Login: ssh " + response.user + "@" + response.ip);
           stopBtn.removeAttr("hidden")
         },
         error: function(xhr, status, error) {

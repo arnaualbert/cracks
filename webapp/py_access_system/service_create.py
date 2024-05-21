@@ -34,9 +34,9 @@ def create_docker_compose(cms_type, cms_name, cms_db_user, cms_db_password, cms_
     #ahora lo que vamos a hacer es crear un directrio de trabajo donde vamos a levantar el docker compose
     # # # cms_type="wordpress"
     # # # cms_name="benhammou"
-    # # # cms_db_user="mohamed"
-    # # # cms_db_password="mohamed"
-    # # # cms_root_password="mohamed"
+    # # # cms_db_user="arnau"
+    # # # cms_db_password="arnau"
+    # # # cms_root_password="arnau"
     username = session.get("username")
     puerto_libre = get_puerto_libre()
 
