@@ -78,7 +78,9 @@
                         
                         <div class="col-md-12 border border-light bg-warning-subtle">
                             <h5 class="card-title text-center"><strong>Service Name: <span style="color: red;">{{ service.service_name }}</span></strong></h5>
-                            <p class="card-text"><strong>CMS Type:</strong> {{ service.cms_type }}</p>
+                            <p class="card-text"><strong>CMS Type:</strong> {{ service.cms_type }}</p>            
+                            <p class="card-text"><strong>Host Name:</strong> db </p>
+                            <p class="card-text"><strong>Data Base Name:</strong> {{ service.service_name }}</p>
                             <p class="card-text"><strong>Data Base User:</strong> {{ service.cms_db_user }}</p>
                             <p class="card-text"><strong>Data Base Password:</strong> {{ service.cms_db_password }}</p>
                             <p class="card-text"><strong>CMS Root Password:</strong> {{ service.cms_root_password }}</p>
@@ -92,13 +94,13 @@
                     <div class="row">     
                           <div class="col-md-12 border border-info">
                             {% if service.cms_type == "wordpress" %}
-                                <img src="../static/wordpress.png" class="img-fluid cms-image" alt="WordPress">
+                                <img src="../static/wordpress.png" style="height: 173px;"  class="img-fluid cms-image" alt="WordPress">
                             {% elif service.cms_type == "drupal" %}
-                                <img src="../static/drupal.png" class="img-fluid cms-image" alt="Drupal">
+                                <img src="../static/drupal.png" style="height: 173px;" class="img-fluid cms-image" alt="Drupal">
                             {% elif service.cms_type == "joomla" %}
-                                <img src="../static/joomla.png" class="img-fluid cms-image" alt="Joomla">
+                                <img src="../static/joomla.png" style="height: 173px;" class="img-fluid cms-image" alt="Joomla">
                             {% elif service.cms_type == "prestashop" %}
-                                <img src="../static/prestashop.png" class="img-fluid cms-image" alt="PrestaShop">
+                                <img src="../static/prestashop.png" style="height: 173px;" class="img-fluid cms-image" alt="PrestaShop">
                             {% endif %}
                           </div>
                     </div>  
