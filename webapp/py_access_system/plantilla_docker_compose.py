@@ -126,7 +126,7 @@ volumes:
     elif cms_type=="prestashop":
         template = f'''       
 services:
-  mysql:
+  db:
     container_name: db_{cms_name}_{user_name}
     image: mysql:5.7
     restart: unless-stopped
@@ -147,7 +147,7 @@ services:
     ports:
       - {puerto_libre}:80
     environment:
-      - DB_SERVER=some-mysql
+      - DB_SERVER=db
       - DB_NAME={cms_name}
       - DB_USER={cms_db_user}
       - DB_PASSWD={cms_db_password}
@@ -166,30 +166,3 @@ volumes:
 '''
         
     return template
-
-
-# version: '3.1'
-       
-# services:
-#   joomladb:
-#     container_name: joomladb_{cms_name}_{user_name}
-#     image: mysql:5.7
-#     restart: always
-#     environment:
-#       - MYSQL_ROOT_PASSWORD={cms_root_password}
-#     volumes:
-#       - ./db_data:/var/lib/mysql
-#   joomla:
-#     container_name: joomla_{cms_name}_{user_name}
-#     image: joomla
-#     restart: always
-#     ports:
-#       - {puerto_libre}:80
-#     environment:
-#       - JOOMLA_DB_HOST=joomladb
-#       - JOOMLA_DB_PASSWORD={cms_db_password}
-#     volumes:
-#       - ./cms_data:/var/www/html
-
-# volumes:
-#   db_data:

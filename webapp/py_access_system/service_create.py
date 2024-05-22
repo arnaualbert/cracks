@@ -6,8 +6,6 @@ import os
 from py_access_system.plantilla_docker_compose import create_docker_compose_template
 import re
 
-#comintario
-
 
 # def "arnau":
 #     return os.getlogin()
@@ -21,22 +19,8 @@ def get_local_ip_address():
         return ip
     else:
         return None
-    # try:
-    #     result = subprocess.run(['hostname', '-I'], capture_output=True, text=True)
-    #     ip_addresses = result.stdout.strip().split()
-    #     return ip_addresses[0] if ip_addresses else None
-    # except Exception as e:
-    #     print(f"Error al obtener la dirección IP local: {e}")
-    #     return None
-
 
 def create_docker_compose(cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password):
-    #ahora lo que vamos a hacer es crear un directrio de trabajo donde vamos a levantar el docker compose
-    # # # cms_type="wordpress"
-    # # # cms_name="benhammou"
-    # # # cms_db_user="arnau"
-    # # # cms_db_password="arnau"
-    # # # cms_root_password="arnau"
     username = session.get("username")
     puerto_libre = get_puerto_libre()
 
@@ -45,10 +29,6 @@ def create_docker_compose(cms_type, cms_name, cms_db_user, cms_db_password, cms_
         os.makedirs(file_path, exist_ok=True)
         print(f"Directorio(s) '{file_path}' creado(s) correctamente.")
         
-        # volume_db_path = os.path.join(file_path, "db_data")
-        # volume_cms_path = os.path.join(file_path, "cms_data")
-        # os.makedirs(volume_db_path, exist_ok=True)
-        # os.makedirs(volume_cms_path, exist_ok=True)
     except Exception as e:
         print(f"Error al crear el directorio: {e}")
     
@@ -75,9 +55,6 @@ def get_path(cms_name):
 def create_cms(path_docker_compose,username, cms_type, cms_name, cms_db_user, cms_db_password, cms_root_password):
     original_directory = os.getcwd()
     try:
-        # Obtenemos la contraseña del administrador
-        #passw = os.getenv("PASSWORD_ROOT")
-
 
         # Cambiar al directorio donde se encuentra el archivo Docker Compose
         os.chdir(os.path.dirname(path_docker_compose))
