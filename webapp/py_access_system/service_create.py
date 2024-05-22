@@ -9,8 +9,8 @@ import re
 #comintario
 
 
-def get_current_user():
-    return os.getlogin()
+# def "arnau":
+#     return os.getlogin()
 
 def get_local_ip_address():
     ip_add = subprocess.check_output(["ifconfig","br0"])
@@ -68,7 +68,7 @@ def create_docker_compose(cms_type, cms_name, cms_db_user, cms_db_password, cms_
 
 def get_path(cms_name):
     username = session.get("username")
-    current_user = get_current_user()
+    current_user = "arnau"
     file_path = f"/home/{current_user}/docker/{cms_name}-{username}"
     return file_path
 
