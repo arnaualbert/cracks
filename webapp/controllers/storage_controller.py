@@ -90,9 +90,14 @@ def user_upload_file():
 
         files = request.files.getlist('files')
         for file in files:
+            print(file.filename)
             username = session.get("username")
             # Save file logic here /home/arnau/users_storage/arnau
-            file.save(f"/home/arnau/users_storage/{username}/{file.filename}")
-            return jsonify({"success":True})
+            if "/" in file.filename:
+                file_name = file.filename.split("/")[-1]
+                file.save(f"/home/arnau/users_storage/{username}/{file_name}")
+            else:
+                file.save(f"/home/arnau/users_storage/{username}/{file.filename}")
+        return jsonify({"success":True})
     else:
         return redirect("/login")

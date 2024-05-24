@@ -6,8 +6,8 @@ from datetime import datetime
 
 contact_module = Blueprint('contact_module', __name__, template_folder='templates')
 
-def get_current_user():
-    return os.getlogin()
+# def "arnau":
+#     return os.getlogin()
 
 
 def get_current_datetime():
@@ -48,7 +48,7 @@ def user_incidents():
         return render_template("contact_us.html", message_show=message, username=username)
     
 def save_data(username, email, type_incident, touched_service, comment, file):
-    current_user = get_current_user()
+    current_user = "arnau"
     print(file)
     date = get_current_datetime()
     directory = f"/home/arnau/Desktop/cracks/incident"

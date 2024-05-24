@@ -2,13 +2,16 @@ import os
 import subprocess
 from controllers.login_controller import get_connection
 import os
+from py_access_system.service_create import get_local_ip_address
+
 
 
 def instert_into_databases_a_db(database_type,database_password,database_name,database_user,puerto, user):
     conn = get_connection()
     cursor = conn.cursor()
+    local_ip_address = get_local_ip_address()
     cursor.execute("INSERT INTO user_databases(database_name,database_type,db_user,db_password,root_password,ip,puerto,username) VALUES (?,?,?,?,?,?,?,?)",
-                    (database_name,database_type,database_user,database_password,database_password,"192.168.127.200",puerto,user))
+                    (database_name,database_type,database_user,database_password,database_password,local_ip_address,puerto,user))
     conn.commit()
 
 
@@ -38,12 +41,17 @@ def create_mdb_mysql(database_type,database_password,database_name,database_user
     ports:
       - "{puerto}:3306"
     volumes:
-      - /home/arnau/Desktop/{database_name}:/var/lib/mysql
+      - /home/arnau/Desktop/{database_name}/{database_name}:/var/lib/mysql
 """
 
     directory_path = f"/home/arnau/Desktop/{database_name}"
+    persistent_path = f"/home/arnau/Desktop/{database_name}/{database_name}"
+
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
+
+    if not os.path.exists(persistent_path):
+        os.makedirs(persistent_path)
 
     file_path = f"{directory_path}/docker-compose.yml"
     
@@ -79,11 +87,11 @@ def get_databases(user):
     conn.close()
     return rows
 
-def get_current_user():
-    return os.getlogin()
+# def "arnau":
+#     return os.getlogin()
 
 def get_path_db(database_name):
-    current_user = get_current_user()
+    current_user = "arnau"
     file_path = f"/home/{current_user}/Desktop/{database_name}"
     return file_path
 

@@ -9,11 +9,11 @@ import json
 #comintario
 
 
-def get_current_user():
-    return os.getlogin()
+# def "arnau":
+#     return os.getlogin()
 
 def get_path_user(username):
-    current_user = get_current_user()
+    current_user = "arnau"
     file_path = f"/home/{current_user}/users_storage/{username}"
     return file_path
 
